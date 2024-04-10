@@ -1,3 +1,49 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+    @variants responsive {
+
+        .active {
+            @apply text-blue-600;
+        }
+
+        .footer {
+            @apply fixed bottom-0 left-0 right-0 p-2 mt-8 text-gray-500 bg-gray-200;
+            padding-bottom: calc(0.5rem + env(safe-area-inset-bottom))
+        }
+
+        .button_1 {
+            @apply inline-block p-4 text-lg text-center text-white cursor-pointer rounded-xl hover:bg-gray-800;
+        }
+
+        .input_heading_a {
+            @apply block text-gray-700;
+        }
+
+        .input_label {
+            @apply block text-gray-700;
+        }
+
+        .input_w_small {
+            @apply w-28 text-gray-700 border-2 border-gray-400 rounded-md;
+        }
+
+        .input_w_full {
+            @apply text-gray-700 border-2 border-gray-400 rounded-md w-full;
+        }
+
+        .textarea {
+            @apply resize-none w-full h-28 border-2 border-gray-400 rounded-md;
+        }
+
+        .input_box_a {
+            @apply text-gray-700 border-2 border-gray-400 rounded-md;
+        }
+
+        .flash_info {
+            @apply fixed top-4 right-4 p-4 border-l-8 border-green-500 bg-white z-50 rounded-md shadow-md;
+        }
+    }
+}
