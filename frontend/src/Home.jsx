@@ -10,7 +10,7 @@ export const Home = () => {
     useEffect(() => {
         const fetchItems = async () => {
             try {
-                const res = await axios.get("http://localhost:8081/items")
+                const res = await axios.get("/items")
                 setData(res.data)
             } catch (error) {
                 console.log(error);
@@ -19,11 +19,19 @@ export const Home = () => {
         fetchItems()
     }, [])
 
+    const calcTotalExpenses = () => {
+        let sum = 0;
+        data.forEach(item => {
+            sum += item.price;
+        });
+        return sum;
+    }
+
     return (
         <>
             <div className="py-4 shadow-md">
                 <div className="flex flex-col items-center">
-                    <h1 className="text-6xl md:text-8xl"> total_price </h1>
+                    <h1 className="text-6xl md:text-8xl"> {calcTotalExpenses()} </h1>
                     <p>Utgifter / mån</p>
                 </div>
                 <div className="flex justify-evenly pt-4">
@@ -58,8 +66,8 @@ export const Home = () => {
                 {/* {% for item in items | sort(attribute=sort_items_by, reverse=sort_items_reverse) %} */}
 
 
-                {data.map((item, i) => (
-                    <Link key={i} to={`/edit_item/${item.user_id}/${item.name}`}
+                {data.length > 0 && data.map((item, i) => (
+                    <Link key={i} to={`/edit_item/${item.id}`} state={item}
                         className="flex justify-between items-center w-full max-w-md p-4 mt-8 bg-blue-900 rounded-2xl shadow-sm animate__animated animate__zoomIn hover:bg-gray-800">
                         <div className="text-white truncate">
                             <h3 className="inline text-3xl">{item.name}</h3>

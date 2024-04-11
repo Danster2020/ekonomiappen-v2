@@ -20,7 +20,7 @@ export const CreateItem = () => {
     const handleSubmit = async e => {
         e.preventDefault()
         try {
-            await axios.post("http://localhost:8081/items", item)
+            await axios.post("/items/add", item)
             navigate("/")
         } catch (error) {
             console.log(error);

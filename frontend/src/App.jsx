@@ -12,7 +12,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home></Home>}></Route>
           <Route path="/create_item" element={<CreateItem></CreateItem>}></Route>
-          <Route path="/edit_item/:user_id/:name" element={<EditItem></EditItem>}></Route>
+          <Route path="/edit_item/:id" element={<EditItem></EditItem>}></Route>
         </Routes>
       </BrowserRouter>
     </>

@@ -1,4 +1,8 @@
 # Dev
+
+Install XAMPP
+Run MySQL server and Apache server
+
 `cd frontend`
 
 `npm install`
