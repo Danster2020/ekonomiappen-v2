@@ -12,6 +12,6 @@ export const db = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-    database: "ekonomiappen_dev",
+    database: "ekonomiappen_development",
     supportBigNumbers: true
 })

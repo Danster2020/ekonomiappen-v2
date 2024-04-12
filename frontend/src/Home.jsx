@@ -70,7 +70,7 @@ export const Home = () => {
                     <Link key={i} to={`/edit_item/${item.id}`} state={item}
                         className="flex justify-between items-center w-full max-w-md p-4 mt-8 bg-blue-900 rounded-2xl shadow-sm animate__animated animate__zoomIn hover:bg-gray-800">
                         <div className="text-white truncate">
-                            <h3 className="inline text-3xl">{item.name}</h3>
+                            <h3 className="inline text-3xl">{item.title}</h3>
                             <p className="mt-3 text-4xl">{item.price} kr</p>
                         </div>
                         <div>

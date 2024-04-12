@@ -23,9 +23,9 @@ export const getItemById = (req, res) => {
 }
 
 export const addItem = (req, res) => {
-    const sql = "INSERT INTO item (`name`, user_id, price, description) VALUES (?)"
+    const sql = "INSERT INTO item (`title`, user_id, price, description) VALUES (?)"
     const values = [
-        req.body.name,
+        req.body.title,
         req.body.user_id,
         req.body.price,
         req.body.description,
@@ -53,10 +53,9 @@ export const deleteItem = (req, res) => {
 
 export const updateItem = (req, res) => {
     const id = req.params.id
-    const sql = "UPDATE item SET `name` = ?, price = ?, description = ? WHERE id = ?"
+    const sql = "UPDATE item SET `title` = ?, price = ?, description = ? WHERE id = ?"
     const values = [
-        req.body.id,
-        req.body.name,
+        req.body.title,
         req.body.price,
         req.body.description,
     ]
