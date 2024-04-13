@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 import { Footer } from './components/Footer'
 import { Link } from 'react-router-dom'
 
 export const Home = () => {
 
-    const [data, setData] = useState([])
+    const [items, setData] = useState([])
+    // const [itemPref, setItemPref] = useState([])
+    const [sortingOrder, setSortingOrder] = useState("");
 
+    // fetch user items
     useEffect(() => {
         const fetchItems = async () => {
             try {
@@ -19,13 +22,61 @@ export const Home = () => {
         fetchItems()
     }, [])
 
+    // fetch item preferences
+    useEffect(() => {
+        const fetchPreferences = async () => {
+            try {
+                const res = await axios.get("/users/" + 1) // TODO change to correct id
+                // setItemPref(res.data)
+                setSortingOrder(res.data.sort_by);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchPreferences()
+    }, [])
+
+
+    const sortItems = (items) => {
+        console.log(sortingOrder);
+        return items.slice().sort((a, b) => {
+            switch (sortingOrder) {
+                case 'price_desc':
+                    return b.price - a.price;
+                case 'price_asc':
+                    return a.price - b.price;
+                default:
+                    return "price_desc";
+            }
+        });
+    };
+
+    const sortedItems = useMemo(() => sortItems(items), [items, sortingOrder]);
+
+    const handleSortByUpdate = async (newSortingOrder) => {
+        console.log("test " + newSortingOrder);
+        try {
+            await axios.put("/users/" + 1, { sort_by: newSortingOrder })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const handleSortingChange = (e) => {
+        const newSortingOrder = e.target.value;
+        setSortingOrder(newSortingOrder);
+        handleSortByUpdate(newSortingOrder); // Pass the updated sorting order directly
+    };
+
     const calcTotalExpenses = () => {
         let sum = 0;
-        data.forEach(item => {
+        items.forEach(item => {
             sum += item.price;
         });
         return sum;
     }
+
+    console.log(items);
 
     return (
         <>
@@ -53,6 +104,8 @@ export const Home = () => {
             <div className="flex flex-col items-center px-4">
                 {/* <form action="/" METHOD="POST">
 
+                
+
         <details className="relative mt-4 w-screen max-w-md">
             <summary className="pl-4 text-lg pr-4 text-right appearance-none hover:cursor-pointer hover:text-gray-500 font-light">Sortera</summary>
             <ul className="absolute max-w-xs z-10 bg-white top-10 text-left right-0 py-2 rounded-xl shadow-lg">
@@ -63,10 +116,17 @@ export const Home = () => {
         </details>
     </form> */}
 
+                <div className='mt-4 w-screen max-w-md flex'>
+                    <select name="sorting" className="" value={sortingOrder} onChange={handleSortingChange}>
+                        <option value="price_desc">Pris sjunkande</option>
+                        <option value="price_asc">Pris stigande</option>
+                    </select>
+                </div>
+
                 {/* {% for item in items | sort(attribute=sort_items_by, reverse=sort_items_reverse) %} */}
 
 
-                {data.length > 0 && data.map((item, i) => (
+                {items.length > 0 && sortedItems?.map((item, i) => (
                     <Link key={i} to={`/edit_item/${item.id}`} state={item}
                         className="flex justify-between items-center w-full max-w-md p-4 mt-8 bg-blue-900 rounded-2xl shadow-sm animate__animated animate__zoomIn hover:bg-gray-800">
                         <div className="text-white truncate">

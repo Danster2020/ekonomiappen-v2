@@ -4,6 +4,8 @@
 
 import express from "express"
 import itemsRoutes from "./routes/items.js"
+import usersRoutes from "./routes/users.js"
+
 import cors from "cors";
 
 const app = express();
@@ -11,18 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/items", itemsRoutes) // items
-
-// const db = mysql.createConnection({
-//     host: "localhost",
-//     user: "root",
-//     password: "",
-//     database: "ekonomiappen_dev",
-//     supportBigNumbers: true
-// })
-
-// app.get("/", (re, res) => {
-//     return res.json("From Backend")
-// })
+app.use("/api/users", usersRoutes) // items
 
 app.get("/users", (req, res) => {
     const sql = "SELECT * FROM user"
