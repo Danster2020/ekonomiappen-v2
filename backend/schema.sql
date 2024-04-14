@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 14, 2024 at 01:20 AM
+-- Generation Time: Apr 14, 2024 at 03:09 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -41,7 +41,6 @@ CREATE TABLE `item` (
 
 INSERT INTO `item` (`id`, `title`, `user_id`, `price`, `description`) VALUES
 (100794752802226177, 'Netflix', 1, 200, 'Netflix per månad'),
-(100794752802226180, 'Tjohooo', 1, 5666, ''),
 (100797600667533312, 'Öl', 1, 400, ''),
 (100797600667533313, 'Ammortering', 1, 3000, '');
 
@@ -69,7 +68,7 @@ CREATE TABLE `item_preference` (
 --
 
 INSERT INTO `item_preference` (`user_id`, `sort_by`) VALUES
-(1, 'price_desc');
+(1, 'price_asc');
 
 -- --------------------------------------------------------
 
@@ -100,15 +99,16 @@ INSERT INTO `sorting` (`type`) VALUES
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT current_timestamp(),
-  `name` varchar(100) NOT NULL
+  `name` varchar(100) NOT NULL,
+  `income` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `date_created`, `name`) VALUES
-(1, '2024-04-11 22:03:51', 'Cool user');
+INSERT INTO `user` (`id`, `date_created`, `name`, `income`) VALUES
+(1, '2024-04-11 22:03:51', 'Cool user', 10000);
 
 --
 -- Indexes for dumped tables
