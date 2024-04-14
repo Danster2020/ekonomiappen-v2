@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Home } from './Home'
 import { CreateItem } from "./CreateItem";
 import { EditItem } from "./EditItem";
+import { UserSettings } from "./UserSettings";
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
           <Route path="/" element={<Home></Home>}></Route>
           <Route path="/create_item" element={<CreateItem></CreateItem>}></Route>
           <Route path="/edit_item/:id" element={<EditItem></EditItem>}></Route>
+          <Route path="/user_settings" element={<UserSettings></UserSettings>}></Route>
         </Routes>
       </BrowserRouter>
     </>

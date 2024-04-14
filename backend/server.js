@@ -5,6 +5,7 @@
 import express from "express"
 import itemsRoutes from "./routes/items.js"
 import usersRoutes from "./routes/users.js"
+import itemPrefRoutes from "./routes/itemPref.js"
 
 import cors from "cors";
 
@@ -14,6 +15,7 @@ app.use(express.json());
 
 app.use("/api/items", itemsRoutes) // items
 app.use("/api/users", usersRoutes) // items
+app.use("/api/item_pref", itemPrefRoutes) // items
 
 app.get("/users", (req, res) => {
     const sql = "SELECT * FROM user"

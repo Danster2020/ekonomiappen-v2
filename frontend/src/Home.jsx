@@ -6,8 +6,10 @@ import { Link } from 'react-router-dom'
 export const Home = () => {
 
     const [items, setData] = useState([])
-    // const [itemPref, setItemPref] = useState([])
     const [sortingOrder, setSortingOrder] = useState("");
+    const [user, setUser] = useState({
+        income: "",
+    })
 
     // fetch user items
     useEffect(() => {
@@ -26,7 +28,7 @@ export const Home = () => {
     useEffect(() => {
         const fetchPreferences = async () => {
             try {
-                const res = await axios.get("/users/" + 1) // TODO change to correct id
+                const res = await axios.get("/item_pref/" + 1) // TODO change to correct id
                 // setItemPref(res.data)
                 setSortingOrder(res.data.sort_by);
             } catch (error) {
@@ -34,6 +36,19 @@ export const Home = () => {
             }
         }
         fetchPreferences()
+    }, [])
+
+    // fetch user items
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const res = await axios.get("/users/" + 1) // TODO change to real id
+                setUser(res.data)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchUser()
     }, [])
 
 
@@ -56,7 +71,7 @@ export const Home = () => {
     const handleSortByUpdate = async (newSortingOrder) => {
         console.log("test " + newSortingOrder);
         try {
-            await axios.put("/users/" + 1, { sort_by: newSortingOrder })
+            await axios.put("/item_pref/" + 1, { sort_by: newSortingOrder })
         } catch (error) {
             console.log(error);
         }
@@ -76,6 +91,27 @@ export const Home = () => {
         return sum;
     }
 
+    const calcBalance = () => {
+        return user.income - calcTotalExpenses();
+    }
+
+    const incomeContent = () => {
+
+        const balance = calcBalance().toFixed(2);
+
+
+        return (
+            <div className="text-center">
+                {balance > 0 ?
+                    <h2 className="text-3xl md:text-4xl text-green-700">+{balance}</h2>
+                    :
+                    <h2 className="text-3xl md:text-4xl text-red-700">{balance}</h2>}
+                <p>Saldo</p>
+            </div>
+        )
+    }
+
+
     console.log(items);
 
     return (
@@ -87,17 +123,10 @@ export const Home = () => {
                 </div>
                 <div className="flex justify-evenly pt-4">
                     <div className="text-center">
-                        <h2 className="text-3xl md:text-4xl"> income </h2>
+                        <h2 className="text-3xl md:text-4xl">{user.income}</h2>
                         <p>Inkomst</p>
                     </div>
-                    <div className="text-center">
-                        {/* {% if capital_is_positive %} */}
-                        <h2 className="text-3xl md:text-4xl text-green-700">+ capital </h2>
-                        {/* {% else %} */}
-                        <h2 className="text-3xl md:text-4xl text-red-700"> capital </h2>
-                        {/* {% endif %} */}
-                        <p>Saldo</p>
-                    </div>
+                    {incomeContent()}
                 </div>
             </div>
 
