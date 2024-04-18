@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 14, 2024 at 03:09 AM
+-- Generation Time: Apr 18, 2024 at 03:05 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -68,7 +68,7 @@ CREATE TABLE `item_preference` (
 --
 
 INSERT INTO `item_preference` (`user_id`, `sort_by`) VALUES
-(1, 'price_asc');
+(1, 'price_desc');
 
 -- --------------------------------------------------------
 
@@ -99,16 +99,18 @@ INSERT INTO `sorting` (`type`) VALUES
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT current_timestamp(),
+  `google_id` varchar(255) DEFAULT NULL,
   `name` varchar(100) NOT NULL,
-  `income` double DEFAULT NULL
+  `income` double DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `date_created`, `name`, `income`) VALUES
-(1, '2024-04-11 22:03:51', 'Cool user', 10000);
+INSERT INTO `user` (`id`, `date_created`, `google_id`, `name`, `income`) VALUES
+(1, '2024-04-11 22:03:51', '103464981000436518465', 'Cool user', 10000),
+(3, '2024-04-17 22:51:30', '103901274092985004016', 'dannes teknikhörna', 0);
 
 --
 -- Indexes for dumped tables
@@ -148,7 +150,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables

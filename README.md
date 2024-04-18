@@ -11,11 +11,17 @@ Run MySQL server and Apache server
 
 `npm install`
 
-# Backend server (inside backend)
+## Enviroment variables
+
+Place .env inside backend
+
+SECRET_KEY=place_key_here
+
+## Backend server (inside backend)
 
 `npm start`
 
 
-# Frontend server (inside frontend)
+## Frontend server (inside frontend)
 
 `npm run dev`

@@ -1,5 +1,24 @@
 import { db } from "../db.js";
 
+
+export const createUser = (req, res) => {
+    const sql = "INSERT INTO user google_id = ?, name = ?"
+    const values = [
+        req.body.name,
+        req.body.user_id,
+        req.body.price,
+        req.body.description,
+    ]
+
+    db.query(sql, [values], (err, data) => {
+        if (err) {
+            return res.json(err)
+        }
+        return res.json("Item created successfully.")
+    })
+}
+
+
 export const getAllUsers = (req, res) => {
     const sql = "SELECT * FROM user";
     db.query(sql, (err, data) => {
@@ -35,3 +54,4 @@ export const editUser = (req, res) => {
         return res.json("user has been updated successfully.")
     })
 }
+

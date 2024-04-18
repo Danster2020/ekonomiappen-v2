@@ -1,7 +1,10 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Footer } from './components/Footer'
 import { useNavigate, useLocation } from 'react-router-dom'
+
+import { googleLogout } from '@react-oauth/google';
+import { Authcontext } from './context/authContext';
 
 export const UserSettings = () => {
 
@@ -13,6 +16,7 @@ export const UserSettings = () => {
         income: "",
     })
 
+    const { logout } = useContext(Authcontext)
 
     // fetch user items
     useEffect(() => {
@@ -45,6 +49,12 @@ export const UserSettings = () => {
 
     console.log(user);
 
+    const handleLogOut = () => {
+        googleLogout()
+        logout()
+        // navigate("/login")
+    }
+
 
     return (
         <>
@@ -66,7 +76,7 @@ export const UserSettings = () => {
 
                         {/* <input className="button_1 flex-grow bg-blue-700" type="submit" value="Spara"> */}
                     </form>
-                    <a className="button_1 mt-4 bg-gray-500" href="/logout">Logga ut</a>
+                    <button className="button_1 mt-4 bg-gray-500" href="/logout" onClick={handleLogOut}>Logga ut</button>
                 </div>
             </div>
             <Footer></Footer>

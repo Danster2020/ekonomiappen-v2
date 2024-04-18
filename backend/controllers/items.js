@@ -1,5 +1,6 @@
 import { db } from "../db.js";
-
+import jwt from "jsonwebtoken"
+import 'dotenv/config'
 
 export const getAllItems = (req, res) => {
     const sql = "SELECT * FROM item";
@@ -40,16 +41,34 @@ export const addItem = (req, res) => {
 }
 
 export const deleteItem = (req, res) => {
-    const id = req.params.id
-    const sql = "DELETE FROM item WHERE id = ?"
 
-    db.query(sql, [id], (err, data) => {
+    // Authentication
+    const token = req.cookies.access_token;
+    if (!token) {
+        return res.status(401).json("Not authenticated!");
+    }
+
+    const secretKey = process.env.SECRET_KEY;
+
+    jwt.verify(token, secretKey, (err, userInfo) => {
         if (err) {
-            return res.json(err)
+            return res.status(403).json("Token is not valid!");
         }
-        return res.json("Item has been deleted successfully.")
-    })
-}
+
+        console.log("DEBUG TOKEN:", userInfo);
+
+        const id = req.params.id;
+        const sql = "DELETE FROM item WHERE id = ?";
+
+        db.query(sql, [id], (err, data) => {
+            if (err) {
+                return res.status(500).json(err);
+            }
+            return res.json("Item has been deleted successfully.");
+        });
+    });
+};
+
 
 export const updateItem = (req, res) => {
     const id = req.params.id

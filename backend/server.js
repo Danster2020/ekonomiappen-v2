@@ -1,21 +1,23 @@
-// const express = require("express");
-// const mysql = require("mysql");
-// const cors = require("cors");
-
 import express from "express"
+import cookieParser from "cookie-parser"
+import cors from "cors";
+
+// Routes
 import itemsRoutes from "./routes/items.js"
 import usersRoutes from "./routes/users.js"
 import itemPrefRoutes from "./routes/itemPref.js"
-
-import cors from "cors";
+import authRoutes from "./routes/auth.js"
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
+
 
 app.use("/api/items", itemsRoutes) // items
-app.use("/api/users", usersRoutes) // items
-app.use("/api/item_pref", itemPrefRoutes) // items
+app.use("/api/users", usersRoutes) // users
+app.use("/api/item_pref", itemPrefRoutes) // item_pref
+app.use("/api/auth", authRoutes) // users
 
 app.get("/users", (req, res) => {
     const sql = "SELECT * FROM user"

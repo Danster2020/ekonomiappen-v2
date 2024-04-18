@@ -5,6 +5,9 @@ import { CreateItem } from "./CreateItem";
 import { EditItem } from "./EditItem";
 import { UserSettings } from "./UserSettings";
 
+import { GoogleLogin } from '@react-oauth/google';
+import { Login } from "./Login";
+
 function App() {
 
   return (
@@ -12,6 +15,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home></Home>}></Route>
+          <Route path="/login" element={<Login></Login>}></Route>
           <Route path="/create_item" element={<CreateItem></CreateItem>}></Route>
           <Route path="/edit_item/:id" element={<EditItem></EditItem>}></Route>
           <Route path="/user_settings" element={<UserSettings></UserSettings>}></Route>
