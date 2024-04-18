@@ -35,7 +35,9 @@ export default function ItemForm({ title }) {
 
     const handleDelete = async () => {
         try {
-            await axios.delete("/items/" + item_id)
+            await axios.delete("/items/" + item_id, {
+                withCredentials: true // Include cookies in the request
+            });
             navigate("/")
         } catch (error) {
             console.log(error);

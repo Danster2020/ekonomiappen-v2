@@ -79,14 +79,16 @@ export const login = async (req, res) => {
 
         // Set the token or relevant user information as the cookie value
         const secretKey = process.env.SECRET_KEY;
-        const token = jwt.sign({ sub: user_google_id }, secretKey);
+        const token = jwt.sign({ sub: user_google_id }, secretKey, { expiresIn: "1h" });
         const isDevelopment = process.env.NODE_ENV === 'development';
 
         console.log("Creating cookie.");
         res.cookie("access_token", token, {
-            httpOnly: !isDevelopment,
-        }).status(200).json({ message: "User logged in successfully" });
 
+        }).status(200).json({ message: "User logged in successfully" });
+        // httpOnly: false, // Ensure the cookie is only accessible via HTTP requests
+        // secure: !isDevelopment, // Set to true in production to only send the cookie over HTTPS
+        // sameSite: isDevelopment ? 'strict' : 'none' // Set sameSite to none for cross-origin requests in production
 
     } catch (error) {
         console.error("Error during login:", error);

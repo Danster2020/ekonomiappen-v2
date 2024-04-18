@@ -42,6 +42,8 @@ export const addItem = (req, res) => {
 
 export const deleteItem = (req, res) => {
 
+    console.log("DEBUG request:", req.cookies);
+
     // Authentication
     const token = req.cookies.access_token;
     if (!token) {

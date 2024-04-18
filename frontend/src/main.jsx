@@ -7,7 +7,9 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 
 import axios from 'axios';
 import { AuthcontextProvider } from './context/authContext.jsx';
+
 axios.defaults.baseURL = 'http://localhost:8081/api';
+axios.defaults.withCredentials = true;
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
