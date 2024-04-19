@@ -20,20 +20,11 @@ export const Login = () => {
 
     const { login } = useContext(Authcontext)
 
-    // const loginUser = async () => {
-    //     try {
-    //         await axios.post("/auth/login", userToken)
-    //         // navigate("/")
-    //         console.log("sent")
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
-
     useEffect(() => {
         console.log(userToken);
         if (userToken.length != 0) {
             login(userToken)
+            sendUserToHomeScreen()
         }
     }, [userToken])
 
@@ -45,17 +36,7 @@ export const Login = () => {
                     <div className="flex gap-4">
                         <GoogleLogin
                             onSuccess={credentialResponse => {
-                                console.log("Login succeded");
                                 setUserToken(credentialResponse)
-                                // setUserToken({
-                                //     userId: credentialResponse.userId,
-                                //     credentials: credentialResponse.credential
-                                // })
-                                // loginUser()
-                                // console.log(credentialResponse);
-                                // console.log(jwtDecode(credentialResponse.credential));
-
-                                // sendUserToHomeScreen()
                             }}
                             onError={() => {
                                 console.log('Login Failed');

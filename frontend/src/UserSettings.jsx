@@ -16,13 +16,13 @@ export const UserSettings = () => {
         income: "",
     })
 
-    const { logout } = useContext(Authcontext)
+    const { logout, currentUser } = useContext(Authcontext)
 
     // fetch user items
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const res = await axios.get("/users/" + 1) // TODO change to real id
+                const res = await axios.get("/users/" + null) // TODO change to real id
                 setUser(res.data)
             } catch (error) {
                 console.log(error);
@@ -52,7 +52,7 @@ export const UserSettings = () => {
     const handleLogOut = () => {
         googleLogout()
         logout()
-        // navigate("/login")
+        navigate("/login")
     }
 
 
@@ -61,6 +61,7 @@ export const UserSettings = () => {
             <div className="flex justify-center mt-8">
                 <div className="custom_form px-4 py-8 max-w-md w-full rounded-lg shadow-xl">
                     <h1 className="text-3xl mb-4">Profil</h1>
+                    <img src={currentUser.picture} alt="user profile" className='rounded-full' />
                     <p className="mb-5">Inloggad som: {user.name}</p>
                     <form className="grid grid-cols-1 gap-6" id="item_form" onSubmit={handleFormSubmit}>
 

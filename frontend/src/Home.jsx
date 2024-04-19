@@ -1,118 +1,88 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 import { Footer } from './components/Footer'
 import { Link } from 'react-router-dom'
+import { Authcontext } from './context/authContext'
 
 export const Home = () => {
-
-    const [items, setData] = useState([])
+    const [items, setData] = useState([]);
     const [sortingOrder, setSortingOrder] = useState("");
     const [user, setUser] = useState({
         income: "",
-    })
+    });
+    const { currentUser } = useContext(Authcontext);
 
-    // fetch user items
+    // Fetch user items and preferences after successful login
     useEffect(() => {
-        const fetchItems = async () => {
+        const fetchUserData = async () => {
             try {
-                const res = await axios.get("/items")
-                setData(res.data)
+                const userResponse = await axios.get("/users/" + null); // TODO: Change to real user ID
+                setUser(userResponse.data);
+
+                const itemResponse = await axios.get("/items");
+                setData(itemResponse.data);
+
+                const prefResponse = await axios.get("/item_pref/" + 1); // TODO: Change to real user ID
+                setSortingOrder(prefResponse.data.sort_by);
             } catch (error) {
-                console.log(error);
+                console.error("Error fetching user data:", error);
             }
+        };
+
+        // Check if currentUser is not null (user is logged in)
+        if (currentUser) {
+            fetchUserData();
         }
-        fetchItems()
-    }, [])
+    }, [currentUser]);
 
-    // fetch item preferences
-    useEffect(() => {
-        const fetchPreferences = async () => {
-            try {
-                const res = await axios.get("/item_pref/" + 1) // TODO change to correct id
-                // setItemPref(res.data)
-                setSortingOrder(res.data.sort_by);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        fetchPreferences()
-    }, [])
-
-    // fetch user items
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const res = await axios.get("/users/" + 1) // TODO change to real id
-                setUser(res.data)
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        fetchUser()
-    }, [])
-
-
+    // Function to sort items based on sorting order
     const sortItems = (items) => {
-        console.log(sortingOrder);
         return items.slice().sort((a, b) => {
             switch (sortingOrder) {
-                case 'price_desc':
+                case "price_desc":
                     return b.price - a.price;
-                case 'price_asc':
+                case "price_asc":
                     return a.price - b.price;
                 default:
-                    return "price_desc";
+                    return 0;
             }
         });
     };
 
+    // Memoize sorted items to avoid unnecessary re-rendering
     const sortedItems = useMemo(() => sortItems(items), [items, sortingOrder]);
 
-    const handleSortByUpdate = async (newSortingOrder) => {
-        console.log("test " + newSortingOrder);
-        try {
-            await axios.put("/item_pref/" + 1, { sort_by: newSortingOrder })
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    const handleSortingChange = (e) => {
+    // Handle sorting order change
+    const handleSortingChange = async (e) => {
         const newSortingOrder = e.target.value;
         setSortingOrder(newSortingOrder);
-        handleSortByUpdate(newSortingOrder); // Pass the updated sorting order directly
+        try {
+            await axios.put("/item_pref/" + 1, { sort_by: newSortingOrder }); // TODO: Change to real user ID
+        } catch (error) {
+            console.error("Error updating sorting order:", error);
+        }
     };
 
+    // Calculate total expenses
     const calcTotalExpenses = () => {
-        let sum = 0;
-        items.forEach(item => {
-            sum += item.price;
-        });
-        return sum;
-    }
+        return items.reduce((total, item) => total + item.price, 0);
+    };
 
+    // Calculate balance
     const calcBalance = () => {
         return user.income - calcTotalExpenses();
-    }
+    };
 
+    // Render income content
     const incomeContent = () => {
-
         const balance = calcBalance().toFixed(2);
-
-
         return (
             <div className="text-center">
-                {balance > 0 ?
-                    <h2 className="text-3xl md:text-4xl text-green-700">+{balance}</h2>
-                    :
-                    <h2 className="text-3xl md:text-4xl text-red-700">{balance}</h2>}
+                <h2 className={`text-3xl md:text-4xl ${balance > 0 ? "text-green-700" : "text-red-700"}`}>{balance > 0 ? `+${balance}` : balance}</h2>
                 <p>Saldo</p>
             </div>
-        )
-    }
-
-
-    console.log(items);
+        );
+    };
 
     return (
         <>
@@ -133,17 +103,17 @@ export const Home = () => {
             <div className="flex flex-col items-center px-4">
                 {/* <form action="/" METHOD="POST">
 
-                
+            
 
-        <details className="relative mt-4 w-screen max-w-md">
-            <summary className="pl-4 text-lg pr-4 text-right appearance-none hover:cursor-pointer hover:text-gray-500 font-light">Sortera</summary>
-            <ul className="absolute max-w-xs z-10 bg-white top-10 text-left right-0 py-2 rounded-xl shadow-lg">
-                <li className=""><button className="p-2  text-blue-800 hover:text-gray-200" name="sort_by_button" value="price_dec" type="submit">{% if sort_items_by == 'price' and sort_items_reverse == true %} &#x2713; {% else %} &nbsp;&nbsp;&nbsp; {% endif %} Pris sjunkande</button></li>
-                <li className=""><button className="p-2 text-blue-800 hover:text-gray-200" name="sort_by_button" value="price_asc" type="submit">{% if sort_items_by == 'price' and sort_items_reverse == false %} &#x2713; {% else %} &nbsp;&nbsp;&nbsp; {% endif %} Pris stigande</button></li>
-            </ul>
+    <details className="relative mt-4 w-screen max-w-md">
+        <summary className="pl-4 text-lg pr-4 text-right appearance-none hover:cursor-pointer hover:text-gray-500 font-light">Sortera</summary>
+        <ul className="absolute max-w-xs z-10 bg-white top-10 text-left right-0 py-2 rounded-xl shadow-lg">
+            <li className=""><button className="p-2  text-blue-800 hover:text-gray-200" name="sort_by_button" value="price_dec" type="submit">{% if sort_items_by == 'price' and sort_items_reverse == true %} &#x2713; {% else %} &nbsp;&nbsp;&nbsp; {% endif %} Pris sjunkande</button></li>
+            <li className=""><button className="p-2 text-blue-800 hover:text-gray-200" name="sort_by_button" value="price_asc" type="submit">{% if sort_items_by == 'price' and sort_items_reverse == false %} &#x2713; {% else %} &nbsp;&nbsp;&nbsp; {% endif %} Pris stigande</button></li>
+        </ul>
 
-        </details>
-    </form> */}
+    </details>
+</form> */}
 
                 <div className='mt-4 w-screen max-w-md flex'>
                     <select name="sorting" className="" value={sortingOrder} onChange={handleSortingChange}>
@@ -172,5 +142,5 @@ export const Home = () => {
             </div>
             <Footer></Footer>
         </>
-    )
-}
+    );
+};

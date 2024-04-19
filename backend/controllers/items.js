@@ -3,12 +3,37 @@ import jwt from "jsonwebtoken"
 import 'dotenv/config'
 
 export const getAllItems = (req, res) => {
-    const sql = "SELECT * FROM item";
-    db.query(sql, (err, data) => {
+
+    console.log("DEBUG request:", req.cookies);
+
+    // Authentication
+    const token = req.cookies.access_token;
+    if (!token) {
+        return res.status(401).json("Not authenticated!");
+    }
+
+    const secretKey = process.env.SECRET_KEY;
+
+    jwt.verify(token, secretKey, (err, userInfo) => {
         if (err) {
-            return res.json(err);
+            return res.status(403).json("Token is not valid!");
         }
-        return res.json(data);
+        console.log("DEBUG TOKEN:", userInfo);
+
+        const id = userInfo.sub
+        const sql = `
+        SELECT item.*
+        FROM item
+        JOIN user ON item.user_id = user.id
+        WHERE user.google_id = ?;
+        `;
+
+        db.query(sql, [id], (err, data) => {
+            if (err) {
+                return res.json(err);
+            }
+            return res.json(data);
+        });
     });
 }
 

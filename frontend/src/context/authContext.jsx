@@ -12,6 +12,7 @@ export const AuthcontextProvider = ({ children }) => {
             const res = await axios.post("/auth/login", token)
             const user_credential = jwtDecode(token.credential);
             setCurrentUser({
+                google_id: user_credential.sub,
                 name: user_credential.name,
                 email: user_credential.email,
                 picture: user_credential.picture
