@@ -1,3 +1,7 @@
+# Custom
+data
+docker-compose.yml
+
 # Logs
 logs
 *.log
