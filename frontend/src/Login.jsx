@@ -44,7 +44,7 @@ export const Login = () => {
                         />
                     </div>
                     <p>Du loggar in på denna webbplatsen med ditt Google-konto. Webbplatsen kan se ditt namn, din e-postadress och din profilbild.
-                        <a href="https://support.google.com/accounts/answer/3466521?p=app_full_access&hl=sv&visit_id=637775093561024322-2424480303&rd=1">Läs mer.</a></p> {/* TODO change to .env */}
+                        <a href="https://support.google.com/accounts/answer/3466521?p=app_full_access&hl=sv&visit_id=637775093561024322-2424480303&rd=1">Läs mer.</a></p>
                 </div>
             </div>
         </>

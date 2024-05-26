@@ -2,6 +2,17 @@ import express from "express"
 import cookieParser from "cookie-parser"
 import cors from "cors";
 
+// loading .env variables
+import dotenv from "dotenv";
+import { fileURLToPath } from 'url';
+import path from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
+
+const client_origin = process.env.CLIENT_ORIGIN;
+
 // Routes
 import itemsRoutes from "./routes/items.js"
 import usersRoutes from "./routes/users.js"
@@ -9,7 +20,13 @@ import itemPrefRoutes from "./routes/itemPref.js"
 import authRoutes from "./routes/auth.js"
 
 const app = express();
-app.use(cors());
+
+const corsOptions = {
+    credentials: true,
+    origin: client_origin // Adjust this to your actual client origin, docker http://localhost:3000
+};
+
+app.use(cors(corsOptions)) // app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }))

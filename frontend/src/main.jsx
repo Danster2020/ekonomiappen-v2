@@ -11,10 +11,13 @@ import { AuthcontextProvider } from './context/authContext.jsx';
 axios.defaults.baseURL = 'http://localhost:8081/api';
 axios.defaults.withCredentials = true;
 
+console.log("Debug g_client_id:", import.meta.env.VITE_GOOGLE_CLIENT_ID);
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthcontextProvider>
-      <GoogleOAuthProvider clientId="56915195244-vbr9li03tvp93javsac6tvshuirm7p9f.apps.googleusercontent.com"> {/* TODO change to .env in production */}
+      <GoogleOAuthProvider clientId={process.env.VITE_GOOGLE_CLIENT_ID}>
+        {/* <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}> */}
         <App />
       </GoogleOAuthProvider>;
     </AuthcontextProvider>

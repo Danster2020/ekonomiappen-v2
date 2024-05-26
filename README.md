@@ -11,12 +11,13 @@ services:
     stdin_open: true
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=$MYSQL_PASSWORD
-      - MYSQL_DATABASE=$MYSQL_DATABASE
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
     ports:
-      - "3307:3306"
+      - "3306:3306"
     volumes:
-      - ./data:/var/lib/mysql
+      # - ./data:/var/lib/mysql
+      - database-volume:/var/lib/mysql
       - ./conf:/etc/mysql/conf.d
       - ./logs:/logs
 
@@ -26,9 +27,13 @@ services:
     depends_on:
       - mysql_srv
     environment:
-      MYSQL_USER: root
-      MYSQL_PASSWORD:
-      MYSQL_DATABASE: ekonomiappen_development
+      SECRET_KEY: ${SECRET_KEY}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: 1234
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      DATABASE_HOST: ${DATABASE_HOST}
+      CLIENT_ORIGIN: ${CLIENT_ORIGIN}
+
     ports:
       - 8081:8081
     volumes:
@@ -37,8 +42,11 @@ services:
   frontend_srv:
     build: 
       context: ./frontend
+      args:
+        - VITE_GOOGLE_CLIENT_ID=${VITE_GOOGLE_CLIENT_ID}
     ports:
       - 3000:80
+
     volumes:
       - ./frontend:/frontend
   
@@ -49,13 +57,12 @@ services:
     container_name: phpadmin_ctr
     restart: always
     environment:
-      PMA_HOST: mysql_srv
+      PMA_HOST: ${DATABASE_HOST}
     ports:
       - 8080:80
 
 volumes:
-  mysql_srv:
-    driver: local
+  database-volume:
 ```
 
 # Dev
@@ -76,13 +83,16 @@ Run MySQL server and Apache server
 
 ## Enviroment variables
 
-Place .env inside backend
+Place .env in root folder
 
 ```
-SECRET_KEY=[google api key]
-MYSQL_USER=[user name]
-MYSQL_PASSWORD=[database password]
-MYSQL_DATABASE=[database name]
+SECRET_KEY=[google_api_key]
+VITE_GOOGLE_CLIENT_ID=[google_client_id]
+MYSQL_USER=[user_name]
+MYSQL_PASSWORD=[database_password]
+MYSQL_DATABASE=[database_name]
+DATABASE_HOST=localhost
+CLIENT_ORIGIN=http://localhost:5173
 ```
 
 NOTE: for dev user is "root", db name is "ekonomiappen_development" and password is empty.
