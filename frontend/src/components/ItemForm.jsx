@@ -69,14 +69,13 @@ export default function ItemForm({ title }) {
 
                     <input name='title' type="text" value={state && item.title} className="input_w_full form-input" placeholder="T.ex. Hyra" onChange={handleChange} />
                     <input name='price' type="number" value={state && item.price} className="input_w_small form-input" placeholder="T.ex. 200" onChange={handleChange} />
-                    <input name='description' type="textarea" value={state && item.description} rows="10" cols="30" className="textarea form-textarea" placeholder="Skriv här..." onChange={handleChange} />
+                    <textarea name='description' type="textarea" value={state && item.description} rows="10" cols="30" className="textarea form-textarea" placeholder="Skriv här..." onChange={handleChange}></textarea>
 
                     <div className="flex gap-4">
                         {!state && <Link className="button_1 bg-gray-500" to="/">
                             Avbryt
                         </Link>}
-                        {state && <button onClick={() => handleDelete()}>Delete</button>}
-                        {/* <input className="button_1 flex-grow bg-blue-700" type="submit" value="Lägg till" /> */}
+                        {state && <button onClick={() => handleDelete()}>Radera</button>}
                         {!state && <button className="button_1 flex-grow bg-blue-700" onClick={handleCreate}>Lägg till</button>}
                         {state && <button className="button_1 flex-grow bg-blue-700" onClick={handleUpdate}>Spara</button>}
 

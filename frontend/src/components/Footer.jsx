@@ -1,13 +1,18 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHome, faPlus, faGear } from '@fortawesome/free-solid-svg-icons'
+
+import { NavLink } from "react-router-dom";
+
 export const Footer = () => {
     return (
         <footer className="footer z-40">
             <ul className="flex justify-evenly text-2xl">
-                <li><Link to="/">Home<i className="fas fa-home "></i></Link></li>
-                <li><Link to="/create_item" >Add<i className="fas fa-plus-circle "></i></Link></li>
-                <li><Link to="/user_settings" >Settings<i className="fas fa-user "></i></Link></li >
+                <li><NavLink to="/" activeclassname="active"><FontAwesomeIcon icon={faHome} title="Hem" /></NavLink></li>
+                <li><NavLink to="/create_item" activeclassname="active"><FontAwesomeIcon icon={faPlus} title="Lägg till" /></NavLink></li>
+                <li><NavLink to="/user_settings" activeclassname="active"><FontAwesomeIcon icon={faGear} title="Inställningar" /></NavLink></li >
             </ul >
         </footer >
     )
