@@ -3,8 +3,16 @@ import axios from 'axios'
 import { Footer } from './components/Footer'
 import { Link } from 'react-router-dom'
 import { Authcontext } from './context/authContext'
+import { useNavigate } from 'react-router-dom'
+import { motion } from "framer-motion"
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFilter } from '@fortawesome/free-solid-svg-icons'
 
 export const Home = () => {
+
+    const navigate = useNavigate()
+
     const [items, setData] = useState([]);
     const [sortingOrder, setSortingOrder] = useState("");
     const [user, setUser] = useState({
@@ -32,6 +40,8 @@ export const Home = () => {
         // Check if currentUser is not null (user is logged in)
         if (currentUser) {
             fetchUserData();
+        } else {
+            navigate("/login")
         }
     }, [currentUser]);
 
@@ -100,30 +110,23 @@ export const Home = () => {
                 </div>
             </div>
 
-            <div className="flex flex-col items-center px-4">
-                {/* <form action="/" METHOD="POST">
-
-            
-
-    <details className="relative mt-4 w-screen max-w-md">
-        <summary className="pl-4 text-lg pr-4 text-right appearance-none hover:cursor-pointer hover:text-gray-500 font-light">Sortera</summary>
-        <ul className="absolute max-w-xs z-10 bg-white top-10 text-left right-0 py-2 rounded-xl shadow-lg">
-            <li className=""><button className="p-2  text-blue-800 hover:text-gray-200" name="sort_by_button" value="price_dec" type="submit">{% if sort_items_by == 'price' and sort_items_reverse == true %} &#x2713; {% else %} &nbsp;&nbsp;&nbsp; {% endif %} Pris sjunkande</button></li>
-            <li className=""><button className="p-2 text-blue-800 hover:text-gray-200" name="sort_by_button" value="price_asc" type="submit">{% if sort_items_by == 'price' and sort_items_reverse == false %} &#x2713; {% else %} &nbsp;&nbsp;&nbsp; {% endif %} Pris stigande</button></li>
-        </ul>
-
-    </details>
-</form> */}
+            <motion.div className="flex flex-col items-center px-4" initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{
+                    type: "spring",
+                    stiffness: 160,
+                    damping: 50
+                }}>
 
                 <div className='mt-4 w-screen max-w-md flex'>
-                    <select name="sorting" className="" value={sortingOrder} onChange={handleSortingChange}>
-                        <option value="price_desc">Pris sjunkande</option>
-                        <option value="price_asc">Pris stigande</option>
-                    </select>
+                    <div>
+                        <FontAwesomeIcon icon={faFilter} className='mr-2 text-gray-700' />
+                        <select name="sorting" className="px-4 py-2 rounded-xl bg-blue-50 border-2 border-blue-100" value={sortingOrder} onChange={handleSortingChange}>
+                            <option value="price_desc">Pris sjunkande</option>
+                            <option value="price_asc">Pris stigande</option>
+                        </select>
+                    </div>
                 </div>
-
-                {/* {% for item in items | sort(attribute=sort_items_by, reverse=sort_items_reverse) %} */}
-
 
                 {items.length > 0 && sortedItems?.map((item, i) => (
                     <Link key={i} to={`/edit_item/${item.id}`} state={item}
@@ -135,12 +138,16 @@ export const Home = () => {
                         <div>
                             <div className="h-20 w-20 bg-white rounded-2xl"></div>
                         </div>
+
+
                     </Link>
                 ))}
 
 
-            </div>
+            </motion.div>
+
             <Footer></Footer>
+
         </>
     );
 };
