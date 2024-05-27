@@ -4,5 +4,5 @@ WORKDIR /backend
 COPY package*.json ./
 RUN npm install
 COPY ./ ./
-EXPOSE 8081
+# EXPOSE 8081
 CMD ["npm", "start"]
