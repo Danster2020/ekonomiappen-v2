@@ -1,9 +1,7 @@
 FROM node:latest
 
 WORKDIR /backend
-# COPY ./package*.json ./
-
-# testing
+COPY ./package*.json ./
 COPY . . 
 
 RUN npm install
