@@ -1,9 +1,5 @@
 #FROM nginx:stable-alpine
 
-# RUN npm run build
-
-#COPY dist/ /usr/share/nginx/html
-
 # Stage 1: Build the frontend assets
 FROM node:alpine as builder
 
