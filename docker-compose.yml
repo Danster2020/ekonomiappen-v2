@@ -32,8 +32,8 @@ services:
     ports:
       - "${HOST_PORT_BACKEND}:8081"
     volumes:
-      - ./backend:/backend
-    command: tail -f /dev/null #used for debugging
+      - ./backend:/app
+    # command: tail -f /dev/null #used for debugging
 
   frontend_srv:
     build: 
