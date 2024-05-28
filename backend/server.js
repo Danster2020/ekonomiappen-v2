@@ -122,5 +122,6 @@ app.get("/users", (req, res) => {
 // start server
 const port = 8081; // 8081
 app.listen(port, () => {
+    console.log("Client origin:", client_origin);
     console.log("Sever Listening on port: " + port + "...")
 })
