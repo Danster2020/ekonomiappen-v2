@@ -13,4 +13,4 @@ COPY . .
 # Check the final contents of /app before starting the application
 RUN echo "Final contents of /app:" && ls -la /app
 
-CMD ["npm", "start"]
+# CMD ["npm", "start"]
