@@ -21,9 +21,25 @@ import authRoutes from "./routes/auth.js"
 
 const app = express();
 
+// const corsOptions = {
+//     credentials: true,
+//     origin: client_origin // Adjust this to your actual client origin, docker http://localhost:3000
+// };
+
+const trustedOrigins = [
+    'http://localhost:3000',
+    client_origin,
+];
+
 const corsOptions = {
     credentials: true,
-    origin: client_origin // Adjust this to your actual client origin, docker http://localhost:3000
+    origin: (origin, callback) => {
+        if (!origin || trustedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
 };
 
 app.use(cors(corsOptions)) // app.use(cors());
