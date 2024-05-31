@@ -1,9 +1,10 @@
 FROM node:latest
 
 RUN echo "ls Before workdir:" && ls -la
+COPY package*.json ./app
 WORKDIR /app
 RUN echo "ls After workdir:" && ls -la
-COPY package*.json ./
+# COPY package*.json ./
 RUN echo "ls after copying package*.json:" && ls -la
 
 # Check if package.json and package-lock.json are copied correctly
