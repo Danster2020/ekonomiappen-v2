@@ -33,7 +33,7 @@ services:
     ports:
       - "${HOST_PORT_BACKEND}:8081"
     volumes:
-      - ./backend:/app
+      - ./backend:/usr/src/app
     # command: tail -f /dev/null #used for debugging
 
   frontend_srv:

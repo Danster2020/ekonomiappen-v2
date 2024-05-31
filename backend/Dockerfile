@@ -2,20 +2,10 @@ FROM node:latest
 
 RUN echo "ls Before workdir:" && ls -la
 
-# root
-USER 0
-
-RUN mkdir -p ./app
-
-COPY package*.json ./app
-
-WORKDIR /app
+WORKDIR /usr/src/app
 RUN echo "ls After workdir:" && ls -la
-# COPY package*.json ./
+COPY package*.json ./
 RUN echo "ls after copying package*.json:" && ls -la
-
-# Check if package.json and package-lock.json are copied correctly
-RUN echo "Contents of /app after copying package*.json:" && ls -la /app && cat /app/package.json
 
 RUN npm install
 
