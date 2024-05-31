@@ -1,7 +1,14 @@
 FROM node:latest
 
 RUN echo "ls Before workdir:" && ls -la
+
+# root
+USER 0
+
+RUN mkdir -p ./app
+
 COPY package*.json ./app
+
 WORKDIR /app
 RUN echo "ls After workdir:" && ls -la
 # COPY package*.json ./
