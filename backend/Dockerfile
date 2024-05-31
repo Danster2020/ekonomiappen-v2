@@ -12,6 +12,6 @@ RUN npm install
 COPY . .
 
 # Check the final contents of /app before starting the application
-RUN echo "Final contents of /app:" && ls -la /app
+RUN echo "ls after copying everything:" && ls -la
 
 CMD ["npm", "start"]
