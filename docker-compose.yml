@@ -15,6 +15,8 @@ services:
       - database-volume:/var/lib/mysql
       - ./conf:/etc/mysql/conf.d
       - ./logs:/logs
+    networks:
+      - ekonomiapp-network
 
   backend_srv:
     build: 
@@ -34,6 +36,8 @@ services:
       PORT: ${VITE_HOST_PORT_BACKEND}
     ports:
       - "${VITE_HOST_PORT_BACKEND}:8081"
+    networks:
+      - ekonomiapp-network
 
   frontend_srv:
     build: 
@@ -46,9 +50,10 @@ services:
       PORT: ${HOST_PORT_FRONTEND}
     ports:
       - "${HOST_PORT_FRONTEND}:80"
-
     volumes:
       - ./frontend:/frontend
+    networks:
+      - ekonomiapp-network
   
   phpmyadmin_srv:
     depends_on:
@@ -61,6 +66,11 @@ services:
       PORT: ${HOST_PORT_PHPMYADMIN}
     ports:
       - "${HOST_PORT_PHPMYADMIN}:80"
+    networks:
+      - ekonomiapp-network
 
 volumes:
   database-volume:
+
+networks:
+  ekonomiapp-network:
