@@ -11,6 +11,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
+const host_port_backend = process.env.VITE_HOST_PORT_BACKEND;
+const host_port_frontend = process.env.HOST_PORT_FRONTEND;
 const client_origin = process.env.CLIENT_ORIGIN;
 
 // Routes
@@ -27,15 +29,17 @@ const app = express();
 // };
 
 const trustedOrigins = [
-    'http://localhost:3000',
-    'http://localhost:8081',
-    client_origin,
+    'http://frontend_srv', // Frontend service name in Docker Compose
+    'http://frontend_srv:' + host_port_frontend,
+    'http://localhost:' + host_port_backend,
+    'http://localhost:' + host_port_frontend,
+    client_origin
 ];
 
 const corsOptions = {
     credentials: true,
     origin: (origin, callback) => {
-        if (!origin || trustedOrigins.indexOf(origin) !== -1) {
+        if (!origin || trustedOrigins.includes(origin)) {
             callback(null, true);
         } else {
             callback(new Error('Not allowed by CORS'));
@@ -137,8 +141,10 @@ app.get("/users", (req, res) => {
 
 
 // start server
-const port = 8081; // 8081
+const port = host_port_backend; // 8081
 app.listen(port, () => {
-    console.log("Client origin:", client_origin);
+    console.log("host_port_backend: " + host_port_backend);
+    console.log("host_port_frontend: " + host_port_frontend);
+    console.log("host_port_frontend: " + client_origin);
     console.log("Sever Listening on port: " + port + "...")
 })

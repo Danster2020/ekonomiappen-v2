@@ -28,19 +28,20 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       DATABASE_HOST: ${DATABASE_HOST}
+      HOST_PORT_FRONTEND: ${HOST_PORT_FRONTEND}
+      VITE_HOST_PORT_BACKEND: ${VITE_HOST_PORT_BACKEND}
       CLIENT_ORIGIN: ${CLIENT_ORIGIN}
-      PORT: ${HOST_PORT_BACKEND}
+      PORT: ${VITE_HOST_PORT_BACKEND}
     ports:
-      - "${HOST_PORT_BACKEND}:8081"
-    # volumes:
-    #   - ./backend:/usr/src/app
-    # command: tail -f /dev/null #used for debugging
+      - "${VITE_HOST_PORT_BACKEND}:8081"
 
   frontend_srv:
     build: 
       context: ./frontend
       args:
         - VITE_GOOGLE_CLIENT_ID=${VITE_GOOGLE_CLIENT_ID}
+        - VITE_AXIOS_BASE_URL=${VITE_AXIOS_BASE_URL}
+        - VITE_HOST_PORT_BACKEND=${VITE_HOST_PORT_BACKEND}
     environment:
       PORT: ${HOST_PORT_FRONTEND}
     ports:
