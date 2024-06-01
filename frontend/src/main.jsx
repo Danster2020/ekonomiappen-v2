@@ -12,7 +12,7 @@ const g_client_id = process.env.VITE_GOOGLE_CLIENT_ID
 const axios_base_url = process.env.VITE_AXIOS_BASE_URL
 const host_port_backend = process.env.VITE_HOST_PORT_BACKEND
 
-axios.defaults.baseURL = "http://localhost" + ":" + host_port_backend + "/api"; // without docker http://localhost:8081/api
+axios.defaults.baseURL = axios_base_url + ":" + host_port_backend + "/api"; // without docker http://localhost:8081/api
 axios.defaults.withCredentials = true;
 
 console.log("Debug g_client_id:", g_client_id);
