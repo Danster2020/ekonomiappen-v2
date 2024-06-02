@@ -12,8 +12,11 @@ const g_client_id = process.env.VITE_GOOGLE_CLIENT_ID
 const axios_base_url = process.env.VITE_AXIOS_BASE_URL
 const host_port_backend = process.env.VITE_HOST_PORT_BACKEND
 
-// axios.defaults.baseURL = axios_base_url + ":" + host_port_backend + "/api"; // without docker http://localhost:8081/api
-axios.defaults.baseURL = "https://ekonomi2.dannesteknikhorna.se/api"
+if (axios_base_url === "localhost") {
+  axios.defaults.baseURL = "http://localhost:" + host_port_backend + "/api"; // without docker http://localhost:8081/api
+} else {
+  axios.defaults.baseURL = axios_base_url + "/api";
+}
 
 axios.defaults.withCredentials = true;
 
