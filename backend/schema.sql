@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 18, 2024 at 03:05 AM
+-- Generation Time: Jun 06, 2024 at 04:53 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -36,15 +36,6 @@ CREATE TABLE `item` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `item`
---
-
-INSERT INTO `item` (`id`, `title`, `user_id`, `price`, `description`) VALUES
-(100794752802226177, 'Netflix', 1, 200, 'Netflix per månad'),
-(100797600667533312, 'Öl', 1, 400, ''),
-(100797600667533313, 'Ammortering', 1, 3000, '');
-
---
 -- Triggers `item`
 --
 DELIMITER $$
@@ -63,13 +54,6 @@ CREATE TABLE `item_preference` (
   `sort_by` varchar(50) NOT NULL DEFAULT 'price_desc'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `item_preference`
---
-
-INSERT INTO `item_preference` (`user_id`, `sort_by`) VALUES
-(1, 'price_desc');
-
 -- --------------------------------------------------------
 
 --
@@ -79,16 +63,6 @@ INSERT INTO `item_preference` (`user_id`, `sort_by`) VALUES
 CREATE TABLE `sorting` (
   `type` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `sorting`
---
-
-INSERT INTO `sorting` (`type`) VALUES
-('name_asc'),
-('name_desc'),
-('price_asc'),
-('price_desc');
 
 -- --------------------------------------------------------
 
@@ -105,12 +79,12 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `user`
+-- Triggers `user`
 --
-
-INSERT INTO `user` (`id`, `date_created`, `google_id`, `name`, `income`) VALUES
-(1, '2024-04-11 22:03:51', '103464981000436518465', 'Cool user', 10000),
-(3, '2024-04-17 22:51:30', '103901274092985004016', 'dannes teknikhörna', 0);
+DELIMITER $$
+CREATE TRIGGER `after_new_user` AFTER INSERT ON `user` FOR EACH ROW INSERT INTO item_preference (user_id) VALUES (NEW.id)
+$$
+DELIMITER ;
 
 --
 -- Indexes for dumped tables
@@ -150,7 +124,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
