@@ -6,6 +6,6 @@ const router = express.Router()
 
 // router.get("/", getAllUsers)
 router.get("/", authenticate, getUserById)
-router.put("/:id", editUser) // TODO add authentication
+router.put("/", authenticate, editUser)
 
 export default router

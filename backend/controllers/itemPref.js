@@ -1,11 +1,12 @@
 import { db } from "../db.js";
+import { handleSQLError } from "./auth.js"
 
 export const getItemPref = (req, res) => {
     const user_id = req.userInfo.user_id
     const sql = "SELECT * FROM item_preference WHERE user_id = ?";
     db.query(sql, [user_id], (err, data) => {
         if (err) {
-            return res.json(err);
+            return handleSQLError(err, res)
         }
         return res.json(data[0]);
     });
@@ -20,7 +21,7 @@ export const changeItemPref = (req, res) => {
 
     db.query(sql, [...values, user_id], (err, data) => {
         if (err) {
-            return res.json(err)
+            return handleSQLError(err, res)
         }
         return res.json("item preference has been updated successfully.")
     })

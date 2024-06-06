@@ -4,6 +4,12 @@ import { OAuth2Client } from 'google-auth-library';
 import { jwtDecode } from "jwt-decode";
 import 'dotenv/config'
 
+
+export const handleSQLError = (error) => {
+    console.error("Database query error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+}
+
 // Authentication middleware function
 export const authenticate = (req, res, next) => {
     // Authentication
@@ -24,7 +30,7 @@ export const authenticate = (req, res, next) => {
         const userSql = "SELECT id FROM user WHERE google_id = ?";
         db.query(userSql, [googleId], (userErr, userData) => {
             if (userErr) {
-                return res.status(500).json(userErr);
+                return handleSQLError(userErr, res)
             }
 
             if (userData.length === 0) {
@@ -99,8 +105,6 @@ export const login = async (req, res) => {
     try {
         // Verify the JWT token
         const response = await verify(req.body.clientId, req.body.credential);
-        console.log("User:", response);
-
         const user_google_id = response.sub;
 
         // Check if the Google user exists

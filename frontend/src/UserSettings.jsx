@@ -38,7 +38,7 @@ export const UserSettings = () => {
 
     const handleUpdate = async () => {
         try {
-            await axios.put("/users/" + user.id, user)
+            await axios.put("/users/", user)
             navigate("/")
         } catch (error) {
             console.log(error);
