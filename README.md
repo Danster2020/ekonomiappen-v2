@@ -40,7 +40,7 @@ NOTE: for dev user is "root", db name is "ekonomiappen_development" and password
 
 ## Backend server (inside backend)
 
-`npm start`
+`npm run dev`
 
 
 ## Frontend server (inside frontend)

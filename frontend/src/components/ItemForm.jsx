@@ -16,7 +16,6 @@ export default function ItemForm({ title }) {
 
     const [item, setItem] = useState({
         title: state?.title || "",
-        //user_id: 1, // TODO change to correct user
         price: state?.price || "",
         description: state?.description || ""
     })

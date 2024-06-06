@@ -30,7 +30,7 @@ export const Home = () => {
                 const itemResponse = await axios.get("/items");
                 setData(itemResponse.data);
 
-                const prefResponse = await axios.get("/item_pref/" + 1); // TODO: Change to real user ID
+                const prefResponse = await axios.get("/item_pref/");
                 setSortingOrder(prefResponse.data.sort_by);
             } catch (error) {
                 console.error("Error fetching user data:", error);
@@ -67,7 +67,7 @@ export const Home = () => {
         const newSortingOrder = e.target.value;
         setSortingOrder(newSortingOrder);
         try {
-            await axios.put("/item_pref/" + 1, { sort_by: newSortingOrder }); // TODO: Change to real user ID
+            await axios.put("/item_pref/", { sort_by: newSortingOrder });
         } catch (error) {
             console.error("Error updating sorting order:", error);
         }
