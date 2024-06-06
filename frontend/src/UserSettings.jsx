@@ -22,7 +22,7 @@ export const UserSettings = () => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const res = await axios.get("/users/" + null) // TODO change to real id
+                const res = await axios.get("/users/")
                 setUser(res.data)
             } catch (error) {
                 console.log(error);

@@ -1,5 +1,6 @@
 import express from "express"
-import { getAllItems, getItemById, addItem, deleteItem, updateItem, authenticate } from "../controllers/items.js"
+import { getAllItems, getItemById, addItem, deleteItem, updateItem } from "../controllers/items.js"
+import { authenticate } from "../controllers/auth.js"
 
 const router = express.Router()
 

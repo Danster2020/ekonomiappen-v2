@@ -24,7 +24,7 @@ export const Home = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const userResponse = await axios.get("/users/" + null); // TODO: Change to real user ID
+                const userResponse = await axios.get("/users/");
                 setUser(userResponse.data);
 
                 const itemResponse = await axios.get("/items");

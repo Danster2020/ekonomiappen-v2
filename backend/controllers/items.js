@@ -2,43 +2,6 @@ import { db } from "../db.js";
 import jwt from "jsonwebtoken"
 import 'dotenv/config'
 
-
-// Authentication middleware function
-
-export const authenticate = (req, res, next) => {
-    // Authentication
-    const token = req.cookies.access_token;
-    if (!token) {
-        return res.status(401).json("Not authenticated!");
-    }
-
-    const secretKey = process.env.SECRET_KEY;
-
-    jwt.verify(token, secretKey, (err, userInfo) => {
-        if (err) {
-            return res.status(403).json("Token is not valid!");
-        }
-
-        // Query the database to find the user ID associated with the Google ID
-        const googleId = userInfo.sub;
-        const userSql = "SELECT id FROM user WHERE google_id = ?";
-        db.query(userSql, [googleId], (userErr, userData) => {
-            if (userErr) {
-                return res.status(500).json(userErr);
-            }
-
-            if (userData.length === 0) {
-                return res.status(404).json("User not found.");
-            }
-
-            // Attach user ID to request object
-            req.userInfo = { ...userInfo, user_id: userData[0].id };
-            next();
-        });
-    });
-};
-
-
 export const getAllItems = (req, res) => {
 
     const id = req.userInfo.user_id; // Extract user ID from request object

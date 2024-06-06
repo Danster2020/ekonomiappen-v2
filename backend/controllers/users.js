@@ -32,35 +32,17 @@ export const getAllUsers = (req, res) => {
 
 export const getUserById = (req, res) => {
 
-    console.log("DEBUG request:", req.cookies);
+    console.log("getUserById");
 
-    // Authentication
-    const token = req.cookies.access_token;
-    if (!token) {
-        return res.status(401).json("Not authenticated!");
-    }
+    const user_id = req.userInfo.user_id
 
-    const secretKey = process.env.SECRET_KEY;
-
-    jwt.verify(token, secretKey, (err, userInfo) => {
+    const sql = "SELECT * FROM user WHERE id = ?";
+    db.query(sql, [user_id], (err, data) => {
         if (err) {
-            return res.status(403).json("Token is not valid!");
+            return res.json(err);
         }
-        console.log("DEBUG TOKEN:", userInfo);
-
-        // const id = req.params.id
-        const google_id = userInfo.sub
-        const sql = "SELECT * FROM user WHERE google_id = ?";
-        db.query(sql, [google_id], (err, data) => {
-            if (err) {
-                return res.json(err);
-            }
-            return res.json(data[0]);
-        });
+        return res.json(data[0]);
     });
-
-
-
 }
 
 export const editUser = (req, res) => {
