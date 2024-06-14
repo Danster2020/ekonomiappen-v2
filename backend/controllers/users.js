@@ -33,7 +33,7 @@ export const createUser = (req, res) => {
 export const getUserById = (req, res) => {
     const user_id = req.userInfo.user_id
 
-    const sql = "SELECT * FROM user WHERE id = ?";
+    const sql = "SELECT id, date_created, name, income FROM user WHERE id = ?";
     db.query(sql, [user_id], (err, data) => {
         if (err) {
             return handleSQLError(err, res)

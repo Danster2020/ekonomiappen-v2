@@ -1,3 +1,7 @@
+# Notes
+
+Make sure that CLIENT_ORIGIN is in Authorized redirect URIs in Google Cloud.
+
 # Production
 
 Run docker-compose file.

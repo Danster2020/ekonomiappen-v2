@@ -40,8 +40,6 @@ export const Home = () => {
         // Check if currentUser is not null (user is logged in)
         if (currentUser) {
             fetchUserData();
-        } else {
-            navigate("/login")
         }
     }, [currentUser]);
 

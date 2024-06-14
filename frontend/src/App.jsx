@@ -7,6 +7,7 @@ import { UserSettings } from "./UserSettings";
 
 import { GoogleLogin } from '@react-oauth/google';
 import { Login } from "./Login";
+import ProtectedRoutes from "./ProtectedRoutes";
 
 function App() {
 
@@ -14,7 +15,10 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home></Home>}></Route>
+          <Route element={<ProtectedRoutes />}>
+            <Route path="/" element={<Home></Home>}></Route>
+          </Route>
+
           <Route path="/login" element={<Login></Login>}></Route>
           <Route path="/create_item" element={<CreateItem></CreateItem>}></Route>
           <Route path="/edit_item/:id" element={<EditItem></EditItem>}></Route>
@@ -26,15 +30,3 @@ function App() {
 }
 
 export default App
-
-{/* <div className='text-red-700 text-xl'>
-<div>
-  <h1>App</h1>
-  {data.map((d, i) => (
-    <div key={i}>
-      <p>{d.id}</p>
-      <p>{d.name}</p>
-    </div>
-  ))}
-</div>
-</div> */}

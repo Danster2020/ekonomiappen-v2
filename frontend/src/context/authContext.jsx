@@ -10,12 +10,19 @@ export const AuthcontextProvider = ({ children }) => {
     const login = async (token) => {
         try {
             const res = await axios.post("/auth/login", token)
-            const user_credential = jwtDecode(token.credential);
-            setCurrentUser({
-                google_id: user_credential.sub,
-                name: user_credential.name,
-                email: user_credential.email,
-                picture: user_credential.picture
+            // console.log("DEBUG REACT", token);
+            // const user_credential = jwtDecode(token);
+            // setCurrentUser({
+            //     google_id: user_credential.sub,
+            //     name: user_credential.name,
+            //     email: user_credential.email,
+            //     picture: user_credential.picture
+            // })
+            setCurrentUser({ // FIXME change to real data
+                google_id: "test",
+                name: "test test",
+                email: "testEmail",
+                picture: "testpicture"
             })
         } catch (error) {
             console.log(error);
