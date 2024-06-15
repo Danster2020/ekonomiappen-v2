@@ -1,17 +1,53 @@
 import { db } from "../db.js";
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 import { OAuth2Client } from 'google-auth-library';
-import { jwtDecode } from "jwt-decode";
-import 'dotenv/config'
+import { jwtDecode } from "jwt-decode"; // Fixed the import
+import 'dotenv/config';
 import axios from "axios";
 
-
-export const handleSQLError = (error) => {
+export const handleSQLError = (error, res) => {
     console.error("Database query error:", error);
     return res.status(500).json({ message: "Internal server error" });
-}
+};
+
+let isRefreshing = false;
+let refreshSubscribers = [];
+
+const onRefreshed = (newToken) => {
+    refreshSubscribers.forEach(callback => callback(newToken));
+    refreshSubscribers = [];
+};
+
+const addRefreshSubscriber = (callback) => {
+    refreshSubscribers.push(callback);
+};
+
+const fetchUserId = async (googleId) => {
+    const userSql = "SELECT id FROM user WHERE google_id = ?";
+    return new Promise((resolve, reject) => {
+        db.query(userSql, [googleId], (userErr, userData) => {
+            if (userErr) {
+                reject(userErr);
+            } else if (userData.length === 0) {
+                resolve(null);
+            } else {
+                resolve(userData[0].id);
+            }
+        });
+    });
+};
 
 export const refreshAccessToken = async (googleId, res) => {
+    if (isRefreshing) {
+        return new Promise((resolve) => {
+            addRefreshSubscriber((newToken) => {
+                resolve(newToken);
+            });
+        });
+    }
+
+    isRefreshing = true;
+
     try {
         const sql = "SELECT refresh_token FROM user WHERE google_id = ?";
         const result = await new Promise((resolve, reject) => {
@@ -27,6 +63,7 @@ export const refreshAccessToken = async (googleId, res) => {
 
         if (!result || !result.refresh_token) {
             console.error("No refresh token found for user");
+            isRefreshing = false;
             return null;
         }
 
@@ -45,10 +82,7 @@ export const refreshAccessToken = async (googleId, res) => {
 
         const { access_token, id_token } = response.data;
 
-
         const payload = jwt.decode(id_token);
-        console.log("DEBUG payload.sub", payload.sub);
-
         const secretKey = process.env.SECRET_KEY;
         const newToken = jwt.sign({ sub: payload.sub }, secretKey, { expiresIn: "1m" });
 
@@ -58,11 +92,14 @@ export const refreshAccessToken = async (googleId, res) => {
             sameSite: process.env.NODE_ENV === 'development' ? 'strict' : 'none',
         });
 
-        console.log("New access token created.");
+        onRefreshed(newToken);
+        isRefreshing = false;
+
         return newToken;
 
     } catch (error) {
         console.error("Error refreshing access token:", error);
+        isRefreshing = false;
         return null;
     }
 };
@@ -74,62 +111,54 @@ export const authenticate = (req, res, next) => {
         return res.status(401).json("Not authenticated!");
     }
 
-    const userInfo = jwtDecode(req.cookies.access_token)
-    console.log("DEBUG userInfo:", userInfo.sub);
-
+    const userInfo = jwtDecode(token);
     const secretKey = process.env.SECRET_KEY;
 
     jwt.verify(token, secretKey, async (err) => {
         if (err && err.name === 'TokenExpiredError') {
-            // Token is expired, refresh it
             console.log("Token expired, refreshing...");
             const refreshedToken = await refreshAccessToken(userInfo.sub, res);
             if (!refreshedToken) {
                 return res.status(403).json("Token is not valid and refresh failed!");
             }
-            req.userInfo = jwt.decode(refreshedToken);
-            next();
+            console.log("Token Refreshed!");
+            const newUserInfo = jwt.decode(refreshedToken);
+            try {
+                const userId = await fetchUserId(newUserInfo.sub);
+                if (!userId) {
+                    return res.status(404).json("User not found.");
+                }
+                req.userInfo = { ...newUserInfo, user_id: userId };
+                next();
+            } catch (fetchUserIdErr) {
+                return handleSQLError(fetchUserIdErr, res);
+            }
         } else if (err) {
             return res.status(403).json("Token is not valid!");
         } else {
             const googleId = userInfo.sub;
-            const userSql = "SELECT id FROM user WHERE google_id = ?";
-            db.query(userSql, [googleId], (userErr, userData) => {
-                if (userErr) {
-                    return handleSQLError(userErr, res);
-                }
-
-                if (userData.length === 0) {
-                    return res.status(404).json("User not found.");
-                }
-
-                req.userInfo = { ...userInfo, user_id: userData[0].id };
-                next();
-            });
+            fetchUserId(googleId)
+                .then((userId) => {
+                    if (!userId) {
+                        return res.status(404).json("User not found.");
+                    }
+                    req.userInfo = { ...userInfo, user_id: userId };
+                    next();
+                })
+                .catch((fetchUserIdErr) => handleSQLError(fetchUserIdErr, res));
         }
     });
 };
 
 async function verify(client_id, jwtToken) {
-
     const client = new OAuth2Client(client_id);
-
-    // Call the verifyIdToken to
-    // verify and decode it
     const ticket = await client.verifyIdToken({
         idToken: jwtToken,
         audience: client_id,
     });
-
-    // Get the JSON with all the user info
     const payload = ticket.getPayload();
-
-    // This is a JSON object that contains
-    // all the user info
     return payload;
 }
-
-
 
 const register = (google_id, name, refresh_token) => {
     const sql = "INSERT INTO user (google_id, name, refresh_token) VALUES (?, ?, ?)";
@@ -145,26 +174,22 @@ const register = (google_id, name, refresh_token) => {
 };
 
 const checkIfGoogleUserExist = async (user_sub) => {
-
-    const id = user_sub
+    const id = user_sub;
     const sql = "SELECT * FROM user WHERE google_id = ?";
-
     return new Promise((resolve, reject) => {
         db.query(sql, [id], (err, data) => {
             if (err) {
                 console.error("Error checking if user exists:", err);
                 resolve(false);
             } else {
-                resolve(data.length > 0); // Resolve with true if user exists, false otherwise
+                resolve(data.length > 0);
             }
         });
     });
-}
+};
 
 export const login = async (req, res) => {
     const { code } = req.body;
-
-    console.log("DEBUG1", code);
 
     const tokenUrl = 'https://oauth2.googleapis.com/token';
     const clientId = process.env.VITE_GOOGLE_CLIENT_ID;
@@ -180,10 +205,7 @@ export const login = async (req, res) => {
             grant_type: 'authorization_code',
         });
 
-        console.log("DEBUG2", response);
-
         const { access_token, refresh_token, id_token } = response.data;
-
         const payload = jwt.decode(id_token);
         const userGoogleId = payload.sub;
 
@@ -208,44 +230,9 @@ export const login = async (req, res) => {
     }
 };
 
-// export const login = async (req, res) => {
-//     console.log("verifying...");
-//     try {
-//         // Verify the JWT token
-//         const response = await verify(req.body.clientId, req.body.credential);
-//         const user_google_id = response.sub;
-
-//         // Check if the Google user exists
-//         const userExists = await checkIfGoogleUserExist(user_google_id);
-//         console.log("UserExists?", userExists);
-
-//         if (!userExists) {
-//             register(user_google_id, response.name)
-//         }
-
-//         // Set the token or relevant user information as the cookie value
-//         const secretKey = process.env.SECRET_KEY;
-//         const token = jwt.sign({ sub: user_google_id }, secretKey, { expiresIn: "1h" });
-//         const isDevelopment = process.env.NODE_ENV === 'development';
-
-//         console.log("Creating cookie.");
-//         res.cookie("access_token", token, {
-
-//         }).status(200).json({ message: "User logged in successfully" });
-//         // httpOnly: false, // Ensure the cookie is only accessible via HTTP requests
-//         // secure: !isDevelopment, // Set to true in production to only send the cookie over HTTPS
-//         // sameSite: isDevelopment ? 'strict' : 'none' // Set sameSite to none for cross-origin requests in production
-
-//     } catch (error) {
-//         console.error("Error during login:", error);
-//         res.status(500).json({ error: "An error occurred during login" });
-//         return;
-//     }
-// }
-
 export const logout = (req, res) => {
     res.clearCookie("access_token", {
         sameSite: "none",
         secure: true
-    }).status(200).json("User has been logged out.")
-}
+    }).status(200).json("User has been logged out.");
+};

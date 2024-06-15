@@ -36,7 +36,7 @@ export const getUserById = (req, res) => {
     const sql = "SELECT id, date_created, name, income FROM user WHERE id = ?";
     db.query(sql, [user_id], (err, data) => {
         if (err) {
-            return handleSQLError(err, res)
+            return res.status(500).json({ message: "Smth went wrong" })
         }
         return res.json(data[0]);
     });
