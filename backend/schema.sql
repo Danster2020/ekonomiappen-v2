@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 06, 2024 at 06:55 PM
+-- Generation Time: Jun 15, 2024 at 06:06 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -74,6 +74,7 @@ CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT current_timestamp(),
   `google_id` varchar(255) DEFAULT NULL,
+  `refresh_token` varchar(512) DEFAULT NULL COMMENT 'used for Google oath',
   `name` varchar(100) NOT NULL,
   `income` double DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
