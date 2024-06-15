@@ -1,7 +1,6 @@
 import { db } from "../db.js";
 import jwt from "jsonwebtoken";
-import { OAuth2Client } from 'google-auth-library';
-import { jwtDecode } from "jwt-decode"; // Fixed the import
+import { jwtDecode } from "jwt-decode";
 import 'dotenv/config';
 import axios from "axios";
 
@@ -37,6 +36,19 @@ const fetchUserId = async (googleId) => {
     });
 };
 
+const updateRefreshToken = (googleId, newRefreshToken) => {
+    const sql = "UPDATE user SET refresh_token = ? WHERE google_id = ?";
+    return new Promise((resolve, reject) => {
+        db.query(sql, [newRefreshToken, googleId], (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+};
+
 export const refreshAccessToken = async (googleId, res) => {
     if (isRefreshing) {
         return new Promise((resolve) => {
@@ -62,9 +74,38 @@ export const refreshAccessToken = async (googleId, res) => {
         });
 
         if (!result || !result.refresh_token) {
-            console.error("No refresh token found for user");
+            console.error("No refresh token found for user. Creating a new one...");
+
+            const tokenUrl = 'https://oauth2.googleapis.com/token';
+            const clientId = process.env.VITE_GOOGLE_CLIENT_ID;
+            const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+
+            const response = await axios.post(tokenUrl, {
+                client_id: clientId,
+                client_secret: clientSecret,
+                refresh_token: null, // This should trigger the creation of a new refresh token
+                grant_type: 'authorization_code', // Use authorization_code grant type to get new refresh token
+            });
+
+            const { access_token, id_token, refresh_token } = response.data;
+
+            // Update the user with the new refresh token
+            await updateRefreshToken(googleId, refresh_token);
+
+            const payload = jwt.decode(id_token);
+            const secretKey = process.env.SECRET_KEY;
+            const newToken = jwt.sign({ sub: payload.sub }, secretKey, { expiresIn: "1m" });
+
+            res.cookie("access_token", newToken, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV !== 'development',
+                sameSite: process.env.NODE_ENV === 'development' ? 'strict' : 'none',
+            });
+
+            onRefreshed(newToken);
             isRefreshing = false;
-            return null;
+
+            return newToken;
         }
 
         const refreshToken = result.refresh_token;
@@ -150,16 +191,6 @@ export const authenticate = (req, res, next) => {
     });
 };
 
-async function verify(client_id, jwtToken) {
-    const client = new OAuth2Client(client_id);
-    const ticket = await client.verifyIdToken({
-        idToken: jwtToken,
-        audience: client_id,
-    });
-    const payload = ticket.getPayload();
-    return payload;
-}
-
 const register = (google_id, name, refresh_token) => {
     const sql = "INSERT INTO user (google_id, name, refresh_token) VALUES (?, ?, ?)";
     const values = [google_id, name, refresh_token];
@@ -213,6 +244,9 @@ export const login = async (req, res) => {
         if (!user) {
             register(userGoogleId, payload.name, refresh_token);
             user = await checkIfGoogleUserExist(userGoogleId);
+        } else {
+            // Update refresh token if it's not present or if we want to ensure it's always updated
+            await updateRefreshToken(userGoogleId, refresh_token);
         }
 
         const secretKey = process.env.SECRET_KEY;
