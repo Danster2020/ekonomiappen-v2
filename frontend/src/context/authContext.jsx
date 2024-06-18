@@ -1,64 +1,47 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
+import { googleLogout } from '@react-oauth/google';
 
-export const Authcontext = createContext()
+export const Authcontext = createContext();
 
 export const AuthcontextProvider = ({ children }) => {
-    const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem("user") || null))
+    const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem("user") || "null"));
+    const [loading, setLoading] = useState(false);
 
     const login = async (token) => {
+        setLoading(true);
         try {
-            const res = await axios.post("/auth/login", token)
-            // console.log("DEBUG REACT", token);
-            // const user_credential = jwtDecode(token);
-            // setCurrentUser({
-            //     google_id: user_credential.sub,
-            //     name: user_credential.name,
-            //     email: user_credential.email,
-            //     picture: user_credential.picture
-            // })
-            setCurrentUser({ // FIXME change to real data
-                google_id: "test",
-                name: "test test",
-                email: "testEmail",
-                picture: "testpicture"
-            })
+            const res = await axios.post("/auth/login", token);
+            const user = res.data.user_object;
+            setCurrentUser({
+                name: user.name,
+                email: user.email,
+                picture: user.picture
+            });
+            setLoading(false);
         } catch (error) {
             console.log(error);
+            setLoading(false);
         }
-    }
+    };
 
-    const logout = async (token) => {
+    const logout = async () => {
         try {
-            const res = await axios.post("/auth/logout")
-            setCurrentUser(null)
+            await axios.post("/auth/logout");
+            googleLogout()
+            setCurrentUser(null);
         } catch (error) {
-            console.log(error);
+            console.log("Error on logout", error);
         }
-    }
+    };
 
     useEffect(() => {
-        localStorage.setItem("user", JSON.stringify(currentUser))
-    }, [currentUser])
-
+        localStorage.setItem("user", JSON.stringify(currentUser));
+    }, [currentUser]);
 
     return (
-        <Authcontext.Provider value={{ currentUser, login, logout }}>
+        <Authcontext.Provider value={{ currentUser, login, logout, loading }}>
             {children}
         </Authcontext.Provider>
-    )
-}
-
-
-
-
-// const loginUser = async () => {
-//     try {
-//         await axios.post("/auth/login", userToken)
-//         // navigate("/")
-//         console.log("sent")
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
+    );
+};

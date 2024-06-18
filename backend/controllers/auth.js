@@ -252,11 +252,17 @@ export const login = async (req, res) => {
         const secretKey = process.env.SECRET_KEY;
         const token = jwt.sign({ sub: userGoogleId }, secretKey, { expiresIn: "1m" });
 
+        const user_object = {
+            email: payload.email,
+            name: payload.name,
+            picture: payload.picture
+        }
+
         res.cookie("access_token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV !== 'development',
             sameSite: process.env.NODE_ENV === 'development' ? 'strict' : 'none',
-        }).status(200).json({ message: "User logged in successfully", user });
+        }).status(200).json({ message: "User logged in successfully", user_object });
 
     } catch (error) {
         console.error("Error during token exchange:", error);

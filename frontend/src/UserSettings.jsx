@@ -2,8 +2,6 @@ import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
 import { Footer } from './components/Footer'
 import { useNavigate, useLocation } from 'react-router-dom'
-
-import { googleLogout } from '@react-oauth/google';
 import { Authcontext } from './context/authContext';
 
 export const UserSettings = () => {
@@ -50,7 +48,6 @@ export const UserSettings = () => {
     console.log(user);
 
     const handleLogOut = () => {
-        googleLogout()
         logout()
         navigate("/login")
     }
