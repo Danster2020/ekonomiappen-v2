@@ -11,8 +11,6 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons'
 
 export const Home = () => {
 
-    const navigate = useNavigate()
-
     const [items, setData] = useState([]);
     const [sortingOrder, setSortingOrder] = useState("");
     const [user, setUser] = useState({
@@ -117,7 +115,7 @@ export const Home = () => {
                 }}>
 
                 <div className='mt-4 w-screen max-w-md flex'>
-                    <div>
+                    <div className='mx-4'>
                         <FontAwesomeIcon icon={faFilter} className='mr-2 text-gray-700' />
                         <select name="sorting" className="px-4 py-2 rounded-xl bg-blue-50 border-2 border-blue-100" value={sortingOrder} onChange={handleSortingChange}>
                             <option value="price_desc">Pris sjunkande</option>
@@ -136,16 +134,12 @@ export const Home = () => {
                         <div>
                             <div className="h-20 w-20 bg-white rounded-2xl"></div>
                         </div>
-
-
                     </Link>
                 ))}
 
 
             </motion.div>
-
             <Footer></Footer>
-
         </>
     );
 };

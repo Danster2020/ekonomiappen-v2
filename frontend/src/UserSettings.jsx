@@ -58,21 +58,16 @@ export const UserSettings = () => {
             <div className="flex justify-center mt-8">
                 <div className="custom_form px-4 py-8 max-w-md w-full rounded-lg shadow-xl">
                     <h1 className="text-3xl mb-4">Profil</h1>
-                    <img src={currentUser.picture} alt="user profile" className='rounded-full' />
-                    <p className="mb-5">Inloggad som: {user.name}</p>
+                    <div className='flex flex-col items-center'>
+                        <img className='w-32 border-4 border-blue-300 rounded-full' src={currentUser.picture} alt="user profile" />
+                        <p className="text-lg font-semibold mt-4">{user.name}</p>
+                    </div>
                     <form className="grid grid-cols-1 gap-6" id="item_form" onSubmit={handleFormSubmit}>
-
-                        {/* {{ render_field(form.income, className_="input_w_full form-input", placeholder="T.ex. lön") } */}
-
-                        <input name='income' className="input_w_full form-input" type='text' placeholder="T.ex. lön" value={user.income} onChange={handleChange} />
-
+                        <div>
+                            <label className='input_label' htmlFor="income">Inkomst</label>
+                            <input name='income' id='income' className="input_w_full form-input" type='text' placeholder="T.ex. lön" value={user.income} onChange={handleChange} />
+                        </div>
                         <button className="button_1 flex-grow bg-blue-700" value="Spara" onClick={handleUpdate}>Spara</button>
-
-                        {/* {{ form.csrf_token }} */}
-
-                        {/* {{ render_field(form.income, className_="input_w_full form-input", placeholder="T.ex. lön") }} */}
-
-                        {/* <input className="button_1 flex-grow bg-blue-700" type="submit" value="Spara"> */}
                     </form>
                     <button className="button_1 mt-4 bg-gray-500" href="/logout" onClick={handleLogOut}>Logga ut</button>
                 </div>

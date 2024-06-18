@@ -23,7 +23,7 @@
         }
 
         .input_label {
-            @apply block text-gray-700;
+            @apply block font-semibold text-gray-600;
         }
 
         .input_w_small {
