@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from "framer-motion"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFilter } from '@fortawesome/free-solid-svg-icons'
+import { faFilter, faArrowDown } from '@fortawesome/free-solid-svg-icons'
 
 export const Home = () => {
 
@@ -84,7 +84,7 @@ export const Home = () => {
         const balance = calcBalance().toFixed(2);
         return (
             <div className="text-center">
-                <h2 className={`text-3xl md:text-4xl ${balance > 0 ? "text-green-700" : "text-red-700"}`}>{balance > 0 ? `+${balance}` : balance}</h2>
+                <h2 className={`text-3xl md:text-4xl ${balance >= 0 ? "text-green-700" : "text-red-700"}`}>{balance > 0 ? `+${balance}` : balance}</h2>
                 <p>Saldo</p>
             </div>
         );
@@ -124,7 +124,7 @@ export const Home = () => {
                     </div>
                 </div>
 
-                {items.length > 0 && sortedItems?.map((item, i) => (
+                {items.length > 0 ? sortedItems?.map((item, i) => (
                     <Link key={i} to={`/edit_item/${item.id}`} state={item}
                         className="flex justify-between items-center w-full max-w-md p-4 mt-8 bg-blue-900 rounded-2xl shadow-sm animate__animated animate__zoomIn hover:bg-gray-800">
                         <div className="text-white truncate">
@@ -135,7 +135,12 @@ export const Home = () => {
                             <div className="h-20 w-20 bg-white rounded-2xl"></div>
                         </div>
                     </Link>
-                ))}
+                )) :
+                    <div className='flex flex-col mt-40'>
+                        <h2 className='text-2xl text-center text-def_blue_2'>Inga utgifter skapade</h2>
+                        <p className='text-gray-600'>Tryck på pluset nedan för att lägga till en utgift.</p>
+                        <FontAwesomeIcon icon={faArrowDown} className='text-7xl mt-10 text-def_blue_2' />
+                    </div>}
 
 
             </motion.div>
