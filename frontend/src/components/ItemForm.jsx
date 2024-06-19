@@ -68,7 +68,7 @@ export default function ItemForm({ title }) {
                 <form className="grid grid-cols-1 gap-6" id="item_form" onSubmit={handleFormSubmit}>
                     <div>
                         <label className='input_label' htmlFor="title">Inkomst</label>
-                        <input name='title' id='title' type="text" value={state && item.title} className="input_w_full form-input" placeholder="T.ex. Hyra" onChange={handleChange} />
+                        <input name='title' id='title' type="text" value={state && item.title} className="input_w_full form-input" placeholder="T.ex. Hyra" onChange={handleChange} autoFocus />
                     </div>
                     <div>
                         <label className='input_label' htmlFor="price">Kostnad</label>

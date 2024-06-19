@@ -6,7 +6,7 @@ import { Authcontext } from './context/authContext';
 import Modal from './components/Modal'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUserSlash } from '@fortawesome/free-solid-svg-icons'
+import { faUserSlash, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
 export const UserSettings = () => {
 
@@ -70,10 +70,10 @@ export const UserSettings = () => {
         <>
             <div className="flex justify-center mt-8">
                 <div className="custom_form px-4 py-8 max-w-md w-full rounded-lg shadow-xl">
-                    <h1 className="text-3xl mb-4">Profil</h1>
+                    <h1 className="text-3xl mb-4">Inställningar</h1>
                     <div className='flex flex-col items-center'>
-                        <img className='w-32 border-4 border-blue-300 rounded-full' src={currentUser.picture} alt="user profile" />
-                        <p className="text-lg font-semibold mt-4">{user.name}</p>
+                        <img className='w-32 h-32 border-4 border-blue-300 rounded-full' src={currentUser.picture} alt="user profile" />
+                        <p className="text-lg font-semibold mt-4">{currentUser.name}</p>
                     </div>
                     <form className="grid grid-cols-1 gap-6" id="item_form" onSubmit={handleFormSubmit}>
                         <div>
@@ -82,8 +82,8 @@ export const UserSettings = () => {
                         </div>
                         <button className="button_1 flex-grow bg-blue-700" value="Spara" onClick={handleUpdate}>Spara</button>
                     </form>
-                    <button className="button_1 w-full mt-4 bg-gray-500" onClick={handleLogOut}>Logga ut</button>
-                    <button className="mt-20 text-red-500" onClick={() => setModal(true)}><FontAwesomeIcon icon={faUserSlash} className='mr-2' />Radera konto</button>
+                    <button className="button_1 w-full mt-20 bg-gray-500" onClick={handleLogOut}><FontAwesomeIcon icon={faArrowRightFromBracket} className='mr-2' />Logga ut</button>
+                    <button className="mt-20 text-red-700" onClick={() => setModal(true)}><FontAwesomeIcon icon={faUserSlash} className='mr-2' />Radera konto</button>
                     <Modal
                         openModal={modal}
                         closeModal={() => setModal(false)}
