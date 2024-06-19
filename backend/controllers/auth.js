@@ -90,7 +90,7 @@ export const refreshAccessToken = async (googleId, res) => {
 
             const payload = jwt.decode(id_token);
             const secretKey = process.env.SECRET_KEY;
-            const newToken = jwt.sign({ sub: payload.sub }, secretKey, { expiresIn: "1m" });
+            const newToken = jwt.sign({ sub: payload.sub }, secretKey, { expiresIn: "1h" });
 
             res.cookie("access_token", newToken, {
                 httpOnly: true,
@@ -121,7 +121,7 @@ export const refreshAccessToken = async (googleId, res) => {
 
         const payload = jwt.decode(id_token);
         const secretKey = process.env.SECRET_KEY;
-        const newToken = jwt.sign({ sub: payload.sub }, secretKey, { expiresIn: "1m" });
+        const newToken = jwt.sign({ sub: payload.sub }, secretKey, { expiresIn: "1h" });
 
         res.cookie("access_token", newToken, {
             httpOnly: true,
@@ -246,7 +246,7 @@ export const login = async (req, res) => {
         }
 
         const secretKey = process.env.SECRET_KEY;
-        const token = jwt.sign({ sub: userGoogleId }, secretKey, { expiresIn: "1m" });
+        const token = jwt.sign({ sub: userGoogleId }, secretKey, { expiresIn: "1h" });
 
         const user_object = {
             email: payload.email,
