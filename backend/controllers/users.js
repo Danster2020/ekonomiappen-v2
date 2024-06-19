@@ -1,6 +1,6 @@
 import { db } from "../db.js";
 import 'dotenv/config'
-import { handleSQLError } from "./auth.js"
+import { handleError } from "../helperFunctions.js"
 
 export const createUser = (req, res) => {
     const sql = "INSERT INTO user google_id = ?, name = ?"
@@ -13,10 +13,22 @@ export const createUser = (req, res) => {
 
     db.query(sql, [values], (err, data) => {
         if (err) {
-            return handleSQLError(err, res)
+            return handleError(err, res)
         }
         return res.json("Item created successfully.")
     })
+}
+
+export const deleteUser = (req, res) => {
+    const user_id = req.userInfo.user_id
+
+    const sql = "DELETE FROM user WHERE id = ?";
+    db.query(sql, [user_id], (err, data) => {
+        if (err) {
+            return handleError(err, res)
+        }
+        return res.status(200).json({ message: "User was deleted" });
+    });
 }
 
 
@@ -36,7 +48,7 @@ export const getUserById = (req, res) => {
     const sql = "SELECT id, date_created, name, income FROM user WHERE id = ?";
     db.query(sql, [user_id], (err, data) => {
         if (err) {
-            return res.status(500).json({ message: "Smth went wrong" })
+            return handleError(err, res)
         }
         return res.json(data[0]);
     });
@@ -51,7 +63,7 @@ export const editUser = (req, res) => {
 
     db.query(sql, [...values, user_id], (err, data) => {
         if (err) {
-            return handleSQLError(err, res)
+            return handleError(err, res)
         }
         return res.json("user has been updated successfully.")
     })

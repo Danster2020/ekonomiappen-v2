@@ -3,12 +3,17 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Footer } from './components/Footer'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Authcontext } from './context/authContext';
+import Modal from './components/Modal'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUserSlash } from '@fortawesome/free-solid-svg-icons'
 
 export const UserSettings = () => {
 
     const navigate = useNavigate()
     const location = useLocation()
     const state = useLocation().state
+    const [modal, setModal] = useState(false);
 
     const [user, setUser] = useState({
         income: "",
@@ -52,6 +57,14 @@ export const UserSettings = () => {
         navigate("/login")
     }
 
+    const handleDeleteUser = async () => {
+        try {
+            await axios.delete("/users/")
+            handleLogOut()
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <>
@@ -69,7 +82,15 @@ export const UserSettings = () => {
                         </div>
                         <button className="button_1 flex-grow bg-blue-700" value="Spara" onClick={handleUpdate}>Spara</button>
                     </form>
-                    <button className="button_1 mt-4 bg-gray-500" href="/logout" onClick={handleLogOut}>Logga ut</button>
+                    <button className="button_1 w-full mt-4 bg-gray-500" onClick={handleLogOut}>Logga ut</button>
+                    <button className="mt-20 text-red-500" onClick={() => setModal(true)}><FontAwesomeIcon icon={faUserSlash} className='mr-2' />Radera konto</button>
+                    <Modal
+                        openModal={modal}
+                        closeModal={() => setModal(false)}
+                        actionButton={handleDeleteUser}
+                    >
+                        Är du säker på att du vill avsluta ditt konto? Allt innehåll relaterat till ditt konto kommer raderas och kommer inte kunna återställas.
+                    </Modal>
                 </div>
             </div>
             <Footer></Footer>

@@ -3,11 +3,7 @@ import jwt from "jsonwebtoken";
 import { jwtDecode } from "jwt-decode";
 import 'dotenv/config';
 import axios from "axios";
-
-export const handleSQLError = (error, res) => {
-    console.error("Database query error:", error);
-    return res.status(500).json({ message: "Internal server error" });
-};
+import { handleError } from "../helperFunctions.js"
 
 let isRefreshing = false;
 let refreshSubscribers = [];
@@ -172,7 +168,7 @@ export const authenticate = (req, res, next) => {
                 req.userInfo = { ...newUserInfo, user_id: userId };
                 next();
             } catch (fetchUserIdErr) {
-                return handleSQLError(fetchUserIdErr, res);
+                return handleError(fetchUserIdErr, res);
             }
         } else if (err) {
             return res.status(403).json("Token is not valid!");
@@ -186,7 +182,7 @@ export const authenticate = (req, res, next) => {
                     req.userInfo = { ...userInfo, user_id: userId };
                     next();
                 })
-                .catch((fetchUserIdErr) => handleSQLError(fetchUserIdErr, res));
+                .catch((fetchUserIdErr) => handleError(fetchUserIdErr, res));
         }
     });
 };
