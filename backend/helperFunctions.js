@@ -1,3 +1,5 @@
+// import log from "log-to-file"
+
 /**
  * Logs the error to console.
  * @param error - The error.
@@ -6,5 +8,6 @@
  */
 export const handleError = (error, response, error_msg = "", user_msg = "Internal server error!", status_code = 500) => {
     console.error("Error" + error_msg + ":", error);
+    // log("Error" + error_msg + ":", error, 'logs.log');
     return response.status(status_code).json({ message: user_msg });
 };

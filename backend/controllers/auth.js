@@ -90,7 +90,7 @@ export const refreshAccessToken = async (googleId, res) => {
 
             const payload = jwt.decode(id_token);
             const secretKey = process.env.SECRET_KEY;
-            const newToken = jwt.sign({ sub: payload.sub }, secretKey, { expiresIn: "1h" });
+            const newToken = jwt.sign({ sub: payload.sub }, secretKey, { expiresIn: "1m" });
 
             res.cookie("access_token", newToken, {
                 httpOnly: true,
@@ -121,7 +121,7 @@ export const refreshAccessToken = async (googleId, res) => {
 
         const payload = jwt.decode(id_token);
         const secretKey = process.env.SECRET_KEY;
-        const newToken = jwt.sign({ sub: payload.sub }, secretKey, { expiresIn: "1h" });
+        const newToken = jwt.sign({ sub: payload.sub }, secretKey, { expiresIn: "1m" });
 
         res.cookie("access_token", newToken, {
             httpOnly: true,
@@ -145,7 +145,7 @@ export const refreshAccessToken = async (googleId, res) => {
 export const authenticate = (req, res, next) => {
     const token = req.cookies.access_token;
     if (!token) {
-        return handleError(err, res, "Not authenticated", "Not authenticated", 401)
+        return res.status(401).json("Not authenticated!");
     }
 
     const userInfo = jwtDecode(token);
@@ -193,7 +193,7 @@ const register = (google_id, name, refresh_token) => {
 
     db.query(sql, values, (err) => {
         if (err) {
-            handleError(err, res, "creating user")
+            console.log("Error creating user:", err);
             return;
         }
         console.log("User created successfully.");
@@ -206,7 +206,7 @@ const checkIfGoogleUserExist = async (user_sub) => {
     return new Promise((resolve, reject) => {
         db.query(sql, [id], (err, data) => {
             if (err) {
-                handleError(err, res, "checking if user exists")
+                console.error("Error checking if user exists:", err);
                 resolve(false);
             } else {
                 resolve(data.length > 0);
@@ -223,6 +223,10 @@ export const login = async (req, res) => {
     const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
     const redirectUri = process.env.CLIENT_ORIGIN;
 
+    console.log("clientId", clientId);
+    console.log("clientSecret", clientSecret);
+    console.log("redirectUri", redirectUri);
+
     try {
         const response = await axios.post(tokenUrl, {
             code,
@@ -238,15 +242,15 @@ export const login = async (req, res) => {
 
         let user = await checkIfGoogleUserExist(userGoogleId);
         if (!user) {
+
             register(userGoogleId, payload.name, refresh_token);
-            user = await checkIfGoogleUserExist(userGoogleId);
         } else {
             // Update refresh token if it's not present or if we want to ensure it's always updated
             await updateRefreshToken(userGoogleId, refresh_token);
         }
 
         const secretKey = process.env.SECRET_KEY;
-        const token = jwt.sign({ sub: userGoogleId }, secretKey, { expiresIn: "1h" });
+        const token = jwt.sign({ sub: userGoogleId }, secretKey, { expiresIn: "1m" });
 
         const user_object = {
             email: payload.email,
