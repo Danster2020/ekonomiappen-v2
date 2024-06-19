@@ -145,7 +145,7 @@ export const refreshAccessToken = async (googleId, res) => {
 export const authenticate = (req, res, next) => {
     const token = req.cookies.access_token;
     if (!token) {
-        return res.status(401).json("Not authenticated!");
+        return handleError(err, res, "Not authenticated", "Not authenticated", 401)
     }
 
     const userInfo = jwtDecode(token);
@@ -193,7 +193,7 @@ const register = (google_id, name, refresh_token) => {
 
     db.query(sql, values, (err) => {
         if (err) {
-            console.log("Error creating user:", err);
+            handleError(err, res, "creating user")
             return;
         }
         console.log("User created successfully.");
@@ -206,7 +206,7 @@ const checkIfGoogleUserExist = async (user_sub) => {
     return new Promise((resolve, reject) => {
         db.query(sql, [id], (err, data) => {
             if (err) {
-                console.error("Error checking if user exists:", err);
+                handleError(err, res, "checking if user exists")
                 resolve(false);
             } else {
                 resolve(data.length > 0);
