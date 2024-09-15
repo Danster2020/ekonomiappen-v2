@@ -106,7 +106,7 @@ export const Home = () => {
                 </div>
             </div>
 
-            <motion.div className="flex flex-col items-center px-4" initial={{ scale: 0, opacity: 0 }}
+            <motion.div className="flex flex-col items-center px-4 pb-20" initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{
                     type: "spring",
