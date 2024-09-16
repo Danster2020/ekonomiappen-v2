@@ -26,21 +26,25 @@ if (db_user == undefined || db_password == undefined || db_name == undefined) {
     console.log("Enviroment variables loaded successfully.");
 }
 
-export const db = mysql.createConnection({
+export const db = mysql.createPool({
     host: db_host, // localhost for dev, mysql_srv for docker
     user: db_user,
     password: db_password,
     database: db_name,
-    supportBigNumbers: true
+    supportBigNumbers: true,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
 })
 
 // Check if the connection was successful
-db.connect(function (err) {
+db.getConnection((err, connection) => {
     if (err) {
         console.error('Error connecting to MySQL database:', err);
         return;
     }
     console.log('Connected to MySQL database');
+    connection.release();
 });
 
 // Handle MySQL connection errors
