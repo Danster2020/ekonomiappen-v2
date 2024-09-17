@@ -81,10 +81,11 @@ export const Home = () => {
 
     // Render income content
     const incomeContent = () => {
-        const balance = calcBalance().toFixed(2);
+        const balance = parseInt(calcBalance().toFixed(2));
+        const balance_text = balance.toLocaleString();
         return (
             <div className="text-center">
-                <h2 className={`text-3xl md:text-4xl ${balance >= 0 ? "text-green-700" : "text-red-700"}`}>{balance > 0 ? `+${balance}` : balance}</h2>
+                <h2 className={`text-3xl md:text-4xl ${balance >= 0 ? "text-green-700" : "text-red-700"}`}>{balance > 0 ? `+${balance_text}` : balance_text}</h2>
                 <p>Saldo</p>
             </div>
         );
@@ -94,12 +95,12 @@ export const Home = () => {
         <>
             <div className="py-4 shadow-md">
                 <div className="flex flex-col items-center">
-                    <h1 className="text-6xl md:text-8xl"> {calcTotalExpenses()} </h1>
+                    <h1 className="text-6xl md:text-8xl"> {calcTotalExpenses().toLocaleString()} </h1>
                     <p>Utgifter / mån</p>
                 </div>
                 <div className="flex justify-evenly pt-4">
                     <div className="text-center">
-                        <h2 className="text-3xl md:text-4xl">{user.income}</h2>
+                        <h2 className="text-3xl md:text-4xl">{user.income.toLocaleString()}</h2>
                         <p>Inkomst</p>
                     </div>
                     {incomeContent()}
@@ -129,7 +130,7 @@ export const Home = () => {
                         className="flex justify-between items-center w-full max-w-md p-4 mt-8 bg-blue-900 rounded-2xl shadow-sm animate__animated animate__zoomIn hover:bg-gray-800">
                         <div className="text-white truncate">
                             <h3 className="inline text-3xl">{item.title}</h3>
-                            <p className="mt-3 text-4xl">{item.price} kr</p>
+                            <p className="mt-3 text-4xl">{item.price.toLocaleString()} kr</p>
                         </div>
                         <div>
                             <div className="h-20 w-20 bg-white rounded-2xl"></div>
