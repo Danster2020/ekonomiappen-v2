@@ -78,7 +78,7 @@ export const UserSettings = () => {
                     <form className="grid grid-cols-1 gap-6" id="item_form" onSubmit={handleFormSubmit}>
                         <div>
                             <label className='input_label' htmlFor="income">Inkomst</label>
-                            <input name='income' id='income' className="input_w_full form-input" type='number' placeholder="T.ex. lön" value={Math.abs(user.income)} onChange={handleChange} />
+                            <input name='income' id='income' className="input_w_full form-input" type='number' inputMode='decimal' placeholder="T.ex. lön" value={Math.abs(user.income)} onChange={handleChange} />
                         </div>
                         <button className="button_1 flex-grow bg-blue-700" value="Spara" onClick={handleUpdate}>Spara</button>
                     </form>

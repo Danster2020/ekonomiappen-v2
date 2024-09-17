@@ -72,7 +72,7 @@ export default function ItemForm({ title }) {
                     </div>
                     <div>
                         <label className='input_label' htmlFor="price">Kostnad</label>
-                        <input name='price' id='price' type="number" value={state && item.price} className="input_w_small form-input" placeholder="T.ex. 200" onChange={handleChange} autoComplete='off' />
+                        <input name='price' id='price' type="number" inputMode='decimal' value={state && item.price} className="input_w_small form-input" placeholder="T.ex. 200" onChange={handleChange} autoComplete='off' />
                     </div>
                     <div>
                         <label className='input_label' htmlFor="description">Beskrivning</label>
