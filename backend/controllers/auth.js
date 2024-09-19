@@ -90,12 +90,13 @@ export const refreshAccessToken = async (googleId, res) => {
 
             const payload = jwt.decode(id_token);
             const secretKey = process.env.SECRET_KEY;
-            const newToken = jwt.sign({ sub: payload.sub }, secretKey, { expiresIn: "1m" });
+            const newToken = jwt.sign({ sub: payload.sub }, secretKey, { expiresIn: "1h" });
 
             res.cookie("access_token", newToken, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV !== 'development',
                 sameSite: process.env.NODE_ENV === 'development' ? 'strict' : 'none',
+                maxAge: 60 * 60 * 1000, // 1 hour in milliseconds
             });
 
             onRefreshed(newToken);
@@ -121,12 +122,13 @@ export const refreshAccessToken = async (googleId, res) => {
 
         const payload = jwt.decode(id_token);
         const secretKey = process.env.SECRET_KEY;
-        const newToken = jwt.sign({ sub: payload.sub }, secretKey, { expiresIn: "1m" });
+        const newToken = jwt.sign({ sub: payload.sub }, secretKey, { expiresIn: "1h" });
 
         res.cookie("access_token", newToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV !== 'development',
             sameSite: process.env.NODE_ENV === 'development' ? 'strict' : 'none',
+            maxAge: 60 * 60 * 1000, // 1 hour in milliseconds
         });
 
         onRefreshed(newToken);
@@ -250,7 +252,7 @@ export const login = async (req, res) => {
         }
 
         const secretKey = process.env.SECRET_KEY;
-        const token = jwt.sign({ sub: userGoogleId }, secretKey, { expiresIn: "1m" });
+        const token = jwt.sign({ sub: userGoogleId }, secretKey, { expiresIn: "1h" });
 
         const user_object = {
             email: payload.email,
@@ -262,6 +264,7 @@ export const login = async (req, res) => {
             httpOnly: true,
             secure: process.env.NODE_ENV !== 'development',
             sameSite: process.env.NODE_ENV === 'development' ? 'strict' : 'none',
+            maxAge: 60 * 60 * 1000, // 1 hour in milliseconds
         }).status(200).json({ message: "User logged in successfully", user_object });
 
     } catch (error) {
