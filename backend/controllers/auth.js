@@ -96,7 +96,7 @@ export const refreshAccessToken = async (googleId, res) => {
                 httpOnly: true,
                 secure: process.env.NODE_ENV !== 'development',
                 sameSite: process.env.NODE_ENV === 'development' ? 'strict' : 'none',
-                maxAge: 60 * 60 * 1000, // 1 hour in milliseconds
+                maxAge: 4 * 7 * 24 * 60 * 60 * 1000 // 1 month
             });
 
             onRefreshed(newToken);
@@ -128,7 +128,7 @@ export const refreshAccessToken = async (googleId, res) => {
             httpOnly: true,
             secure: process.env.NODE_ENV !== 'development',
             sameSite: process.env.NODE_ENV === 'development' ? 'strict' : 'none',
-            maxAge: 60 * 60 * 1000, // 1 hour in milliseconds
+            maxAge: 4 * 7 * 24 * 60 * 60 * 1000 // 1 month
         });
 
         onRefreshed(newToken);
@@ -264,7 +264,7 @@ export const login = async (req, res) => {
             httpOnly: true,
             secure: process.env.NODE_ENV !== 'development',
             sameSite: process.env.NODE_ENV === 'development' ? 'strict' : 'none',
-            maxAge: 60 * 60 * 1000, // 1 hour in milliseconds
+            maxAge: 4 * 7 * 24 * 60 * 60 * 1000 // 1 month
         }).status(200).json({ message: "User logged in successfully", user_object });
 
     } catch (error) {
