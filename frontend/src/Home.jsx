@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Footer } from './components/Footer'
 import { Link } from 'react-router-dom'
 import { Authcontext } from './context/authContext'
+import { Spinner } from './components/Spinner'
 import { useNavigate } from 'react-router-dom'
 import { motion } from "framer-motion"
 
@@ -17,10 +18,12 @@ export const Home = () => {
         income: "",
     });
     const { currentUser } = useContext(Authcontext);
+    const [loading, setLoading] = useState(true); // Add loading state
 
     // Fetch user items and preferences after successful login
     useEffect(() => {
         const fetchUserData = async () => {
+            setLoading(true);
             try {
                 const userResponse = await axios.get("/users/");
                 setUser(userResponse.data);
@@ -32,6 +35,9 @@ export const Home = () => {
                 setSortingOrder(prefResponse.data.sort_by);
             } catch (error) {
                 console.error("Error fetching user data:", error);
+            }
+            finally {
+                setLoading(false);
             }
         };
 
@@ -107,44 +113,55 @@ export const Home = () => {
                 </div>
             </div>
 
-            <motion.div className="flex flex-col items-center px-4 pb-20" initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{
-                    type: "spring",
-                    stiffness: 160,
-                    damping: 50
-                }}>
+            {loading ? (
+                <div className='flex flex-col items-center px-4 pb-20'>
+                    <div className='mt-32'>
+                        <Spinner></Spinner>
 
-                <div className='mt-4 w-screen max-w-md flex'>
-                    <div className='mx-4'>
-                        <FontAwesomeIcon icon={faFilter} className='mr-2 text-gray-700' />
-                        <select name="sorting" className="px-4 py-2 rounded-xl bg-blue-50 border-2 border-blue-100" value={sortingOrder} onChange={handleSortingChange}>
-                            <option value="price_desc">Pris sjunkande</option>
-                            <option value="price_asc">Pris stigande</option>
-                        </select>
                     </div>
                 </div>
+            ) : (
+                <motion.div className="flex flex-col items-center px-4 pb-20" initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{
+                        type: "spring",
+                        stiffness: 160,
+                        damping: 50
+                    }}>
 
-                {items.length > 0 ? sortedItems?.map((item, i) => (
-                    <Link key={i} to={`/edit_item/${item.id}`} state={item}
-                        className="flex justify-between items-center w-full max-w-md p-4 mt-8 bg-blue-900 rounded-2xl shadow-sm animate__animated animate__zoomIn hover:bg-gray-800">
-                        <div className="text-white truncate">
-                            <h3 className="inline text-3xl">{item.title}</h3>
-                            <p className="mt-3 text-4xl">{item.price.toLocaleString()} kr</p>
+                    <div className='mt-4 w-screen max-w-md flex'>
+                        <div className='mx-4'>
+                            <FontAwesomeIcon icon={faFilter} className='mr-2 text-gray-700' />
+                            <select name="sorting" className="px-4 py-2 rounded-xl bg-blue-50 border-2 border-blue-100" value={sortingOrder} onChange={handleSortingChange}>
+                                <option value="price_desc">Pris sjunkande</option>
+                                <option value="price_asc">Pris stigande</option>
+                            </select>
                         </div>
-                        <div>
-                            <div className="h-20 w-20 bg-white rounded-2xl"></div>
-                        </div>
-                    </Link>
-                )) :
-                    <div className='flex flex-col mt-40'>
-                        <h2 className='text-2xl text-center text-def_blue_2'>Inga utgifter skapade</h2>
-                        <p className='text-gray-600'>Tryck på pluset nedan för att lägga till en utgift.</p>
-                        <FontAwesomeIcon icon={faArrowDown} className='text-7xl mt-10 text-def_blue_2' />
-                    </div>}
+                    </div>
+
+                    {items.length > 0 ? sortedItems?.map((item, i) => (
+                        <Link key={i} to={`/edit_item/${item.id}`} state={item}
+                            className="flex justify-between items-center w-full max-w-md p-4 mt-8 bg-blue-900 rounded-2xl shadow-sm animate__animated animate__zoomIn hover:bg-gray-800">
+                            <div className="text-white truncate">
+                                <h3 className="inline text-3xl">{item.title}</h3>
+                                <p className="mt-3 text-4xl">{item.price.toLocaleString()} kr</p>
+                            </div>
+                            <div>
+                                <div className="h-20 w-20 bg-white rounded-2xl"></div>
+                            </div>
+                        </Link>
+                    )) :
+                        <div className='flex flex-col mt-40'>
+                            <h2 className='text-2xl text-center text-def_blue_2'>Inga utgifter skapade</h2>
+                            <p className='text-gray-600'>Tryck på pluset nedan för att lägga till en utgift.</p>
+                            <FontAwesomeIcon icon={faArrowDown} className='text-7xl mt-10 text-def_blue_2' />
+                        </div>}
 
 
-            </motion.div>
+                </motion.div>
+            )}
+
+
             <Footer></Footer>
         </>
     );
