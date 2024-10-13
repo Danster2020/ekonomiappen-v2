@@ -10,6 +10,8 @@ import { motion } from "framer-motion"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFilter, faArrowDown } from '@fortawesome/free-solid-svg-icons'
 
+import toast, { Toaster } from 'react-hot-toast';
+
 export const Home = () => {
 
     const [items, setData] = useState([]);
@@ -33,11 +35,12 @@ export const Home = () => {
 
                 const prefResponse = await axios.get("/item_pref/");
                 setSortingOrder(prefResponse.data.sort_by);
-            } catch (error) {
-                console.error("Error fetching user data:", error);
-            }
-            finally {
+
                 setLoading(false);
+            } catch (error) {
+                const err_msg = "Error fetching user data"
+                console.error(err_msg, error);
+                toast.error("Något gick fel")
             }
         };
 
@@ -99,6 +102,7 @@ export const Home = () => {
 
     return (
         <>
+            <Toaster position="top-right" />
             <div className="py-4 shadow-md">
                 <div className="flex flex-col items-center">
                     <h1 className="text-6xl md:text-8xl"> {calcTotalExpenses().toLocaleString()} </h1>

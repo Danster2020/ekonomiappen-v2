@@ -8,6 +8,8 @@ import Modal from './components/Modal'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserSlash, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
+import toast, { Toaster } from 'react-hot-toast';
+
 export const UserSettings = () => {
 
     const navigate = useNavigate()
@@ -29,6 +31,7 @@ export const UserSettings = () => {
                 setUser(res.data)
             } catch (error) {
                 console.log(error);
+                toast.error("Något gick fel")
             }
         }
         fetchUser()
@@ -68,6 +71,7 @@ export const UserSettings = () => {
 
     return (
         <>
+            <Toaster position="top-right" />
             <div className="flex justify-center mt-8">
                 <div className="custom_form px-4 py-8 max-w-md w-full rounded-lg shadow-xl">
                     <h1 className="text-3xl mb-4">Inställningar</h1>
