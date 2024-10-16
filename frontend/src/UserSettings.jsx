@@ -73,7 +73,7 @@ export const UserSettings = () => {
         <>
             <Toaster position="top-right" />
             <div className="flex justify-center mt-8">
-                <div className="custom_form px-4 py-8 max-w-md w-full rounded-lg shadow-xl">
+                <div className="custom_form px-4 py-8 max-w-md w-full rounded-lg shadow-xl dark:bg-def_dark_2">
                     <h1 className="text-3xl mb-4">Inställningar</h1>
                     <div className='flex flex-col items-center'>
                         <img className='w-32 h-32 border-4 border-blue-300 rounded-full' src={currentUser.picture} alt="user profile" />

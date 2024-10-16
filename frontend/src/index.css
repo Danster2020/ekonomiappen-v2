@@ -2,11 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    body {
+        @apply dark:bg-def_dark_1 dark:text-white;
+    }
+}
+
 @layer utilities {
     @variants responsive {
 
         .active {
-            @apply text-blue-600;
+            @apply text-blue-600 dark:text-blue-500;
         }
 
         .footer {
@@ -23,19 +29,19 @@
         }
 
         .input_label {
-            @apply block font-semibold text-gray-600;
+            @apply block font-semibold text-gray-600 dark:text-white;
         }
 
         .input_w_small {
-            @apply w-28 text-gray-700 border-2 border-gray-400 rounded-md;
+            @apply w-28 text-gray-700 border-2 border-gray-400 dark:border-neutral-700 dark:bg-def_dark_2 dark:text-white rounded-md;
         }
 
         .input_w_full {
-            @apply text-gray-700 border-2 border-gray-400 rounded-md w-full;
+            @apply text-gray-700 border-2 border-gray-400 dark:border-neutral-700 dark:bg-def_dark_2 dark:text-white rounded-md w-full;
         }
 
         .textarea {
-            @apply resize-none w-full h-28 border-2 border-gray-400 rounded-md;
+            @apply resize-none w-full h-28 border-2 border-gray-400 dark:border-neutral-700 dark:bg-def_dark_2 dark:text-white rounded-md;
         }
 
         .input_box_a {
