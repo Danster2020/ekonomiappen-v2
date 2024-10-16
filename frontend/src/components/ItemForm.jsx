@@ -63,9 +63,9 @@ export default function ItemForm({ title }) {
 
     return (
         <div className="flex justify-center mt-8">
-            <div className="custom_form px-4 py-8 max-w-md w-full rounded-lg shadow-xl">
+            <div className="custom_form px-4 py-8 max-w-md w-full rounded-lg shadow-xl dark:bg-def_dark_2">
                 <h1 className="text-3xl mb-4">{title}</h1>
-                <form className="grid grid-cols-1 gap-6" id="item_form" onSubmit={handleFormSubmit}>
+                <form className="grid grid-cols-1 gap-6 " id="item_form" onSubmit={handleFormSubmit}>
                     <div>
                         <label className='input_label' htmlFor="title">Titel</label>
                         <input name='title' id='title' type="text" value={state && item.title} className="input_w_full form-input" placeholder="T.ex. Hyra" onChange={handleChange} autoFocus />

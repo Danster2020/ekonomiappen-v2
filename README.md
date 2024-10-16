@@ -49,4 +49,4 @@ NOTE: for dev user is "root", db name is "ekonomiappen_development" and password
 
 ## Frontend server (inside frontend)
 
-`npm run dev`
+`npm run dev` or vite `npm run dev -- --host 0.0.0.0` (access from any computer in network)

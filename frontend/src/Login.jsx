@@ -33,7 +33,7 @@ export const Login = () => {
 
     return (
         <div className="flex justify-center mt-8">
-            <div className="custom_form px-4 py-8 max-w-md w-full rounded-lg shadow-xl">
+            <div className="custom_form px-4 py-8 max-w-md w-full rounded-lg shadow-xl dark:bg-def_dark_2">
                 <h1 className="text-3xl mb-4">Logga in</h1>
                 <div className="flex gap-4">
                     <button className='text-lg bg-blue-700 hover:bg-blue-800 text-white px-4 py-5 rounded-xl mb-2' onClick={handleLoginUser}>

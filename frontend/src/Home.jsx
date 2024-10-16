@@ -94,7 +94,7 @@ export const Home = () => {
         const balance_text = balance.toLocaleString();
         return (
             <div className="text-center">
-                <h2 className={`text-3xl md:text-4xl ${balance >= 0 ? "text-green-700" : "text-red-700"}`}>{balance > 0 ? `+${balance_text}` : balance_text}</h2>
+                <h2 className={`text-3xl md:text-4xl ${balance >= 0 ? "text-green-700 dark:text-green-300" : "text-red-700 dark:text-red-400"}`}>{balance > 0 ? `+${balance_text}` : balance_text}</h2>
                 <p>Saldo</p>
             </div>
         );
@@ -103,7 +103,7 @@ export const Home = () => {
     return (
         <>
             <Toaster position="top-right" />
-            <div className="py-4 shadow-md">
+            <div className="py-4 shadow-md dark:bg-def_dark_2 dark:text-white">
                 <div className="flex flex-col items-center">
                     <h1 className="text-6xl md:text-8xl"> {calcTotalExpenses().toLocaleString()} </h1>
                     <p>Utgifter / mån</p>
@@ -125,7 +125,7 @@ export const Home = () => {
                     </div>
                 </div>
             ) : (
-                <motion.div className="flex flex-col items-center px-4 pb-20" initial={{ scale: 0, opacity: 0 }}
+                <motion.div className="flex flex-col items-center px-4 pb-20 " initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{
                         type: "spring",
@@ -136,7 +136,7 @@ export const Home = () => {
                     <div className='mt-4 w-screen max-w-md flex'>
                         <div className='mx-4'>
                             <FontAwesomeIcon icon={faFilter} className='mr-2 text-gray-700' />
-                            <select name="sorting" className="px-4 py-2 rounded-xl bg-blue-50 border-2 border-blue-100" value={sortingOrder} onChange={handleSortingChange}>
+                            <select name="sorting" className="px-4 py-2 rounded-xl bg-blue-50 border-2 border-blue-100 dark:border-neutral-700 dark:bg-def_dark_1 dark:text-white" value={sortingOrder} onChange={handleSortingChange}>
                                 <option value="price_desc">Pris sjunkande</option>
                                 <option value="price_asc">Pris stigande</option>
                             </select>
@@ -151,7 +151,7 @@ export const Home = () => {
                                 <p className="mt-3 text-4xl">{item.price.toLocaleString()} kr</p>
                             </div>
                             <div>
-                                <div className="h-20 w-20 bg-white rounded-2xl"></div>
+                                <div className="h-20 w-20 bg-white dark:bg-def_dark_2 rounded-2xl"></div>
                             </div>
                         </Link>
                     )) :

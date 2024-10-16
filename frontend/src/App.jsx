@@ -8,6 +8,7 @@ import { UserSettings } from "./UserSettings";
 import { GoogleLogin } from '@react-oauth/google';
 import { Login } from "./Login";
 import ProtectedRoutes from "./ProtectedRoutes";
+import { ExamplePage } from "./ExamplePage";
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
             <Route path="/user_settings" element={<UserSettings></UserSettings>}></Route>
           </Route>
           <Route path="/login" element={<Login></Login>}></Route>
+          <Route path="/example_page" element={<ExamplePage></ExamplePage>}></Route>
         </Routes>
       </BrowserRouter>
     </>
