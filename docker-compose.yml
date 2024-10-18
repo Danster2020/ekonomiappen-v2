@@ -1,4 +1,4 @@
-version: '3.8'
+# version: '3.8'
 services:
   mysql_srv:
     image: mysql:8.0
@@ -41,21 +41,21 @@ services:
   #   networks:
   #     - ekonomiapp-network
 
-  frontend_srv:
-    build: 
-      context: ./frontend
-      args:
-        - VITE_GOOGLE_CLIENT_ID=${VITE_GOOGLE_CLIENT_ID}
-        - VITE_AXIOS_BASE_URL=${VITE_AXIOS_BASE_URL}
-        - VITE_HOST_PORT_BACKEND=${VITE_HOST_PORT_BACKEND}
-    environment:
-      PORT: ${HOST_PORT_FRONTEND}
-    ports:
-      - "${HOST_PORT_FRONTEND}:80"
-    volumes:
-      - ./frontend:/frontend
-    networks:
-      - ekonomiapp-network
+  # frontend_srv:
+  #   build: 
+  #     context: ./frontend
+  #     args:
+  #       - VITE_GOOGLE_CLIENT_ID=${VITE_GOOGLE_CLIENT_ID}
+  #       - VITE_AXIOS_BASE_URL=${VITE_AXIOS_BASE_URL}
+  #       - VITE_HOST_PORT_BACKEND=${VITE_HOST_PORT_BACKEND}
+  #   environment:
+  #     PORT: ${HOST_PORT_FRONTEND}
+  #   ports:
+  #     - "${HOST_PORT_FRONTEND}:80"
+  #   volumes:
+  #     - ./frontend:/frontend
+  #   networks:
+  #     - ekonomiapp-network
   
   phpmyadmin_srv:
     depends_on:
