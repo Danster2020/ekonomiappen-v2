@@ -18,28 +18,28 @@ services:
     networks:
       - ekonomiapp-network
 
-  # backend_srv:
-  #   build: 
-  #     context: ./backend
-  #     dockerfile: Dockerfile
-  #   depends_on:
-  #     - mysql_srv
-  #   environment:
-  #     SECRET_KEY: ${SECRET_KEY}
-  #     MYSQL_USER: ${MYSQL_USER}
-  #     MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-  #     MYSQL_DATABASE: ${MYSQL_DATABASE}
-  #     DATABASE_HOST: ${DATABASE_HOST}
-  #     HOST_PORT_FRONTEND: ${HOST_PORT_FRONTEND}
-  #     VITE_HOST_PORT_BACKEND: ${VITE_HOST_PORT_BACKEND}
-  #     VITE_GOOGLE_CLIENT_ID: ${VITE_GOOGLE_CLIENT_ID}
-  #     GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-  #     CLIENT_ORIGIN: ${CLIENT_ORIGIN}
-  #     PORT: ${VITE_HOST_PORT_BACKEND}
-  #   ports:
-  #     - "${VITE_HOST_PORT_BACKEND}:8081"
-  #   networks:
-  #     - ekonomiapp-network
+  backend_srv:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    depends_on:
+      - mysql_srv
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      DATABASE_HOST: ${DATABASE_HOST}
+      HOST_PORT_FRONTEND: ${HOST_PORT_FRONTEND}
+      VITE_HOST_PORT_BACKEND: ${VITE_HOST_PORT_BACKEND}
+      VITE_GOOGLE_CLIENT_ID: ${VITE_GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      CLIENT_ORIGIN: ${CLIENT_ORIGIN}
+      PORT: ${VITE_HOST_PORT_BACKEND}
+    ports:
+      - "${VITE_HOST_PORT_BACKEND}:8081"
+    networks:
+      - ekonomiapp-network
 
   # frontend_srv:
   #   build: 
