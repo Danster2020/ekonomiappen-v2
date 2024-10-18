@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:22.2.0
 
 RUN echo "ls Before workdir:" && ls -la
 
