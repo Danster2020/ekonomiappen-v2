@@ -1,7 +1,7 @@
 #FROM nginx:stable-alpine
 
 # Stage 1: Build the frontend assets
-FROM node:alpine as builder
+FROM node:18-alpine as builder
 
 # Set the working directory
 WORKDIR /app
@@ -10,7 +10,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # Copy the rest of the application code
 COPY . .
