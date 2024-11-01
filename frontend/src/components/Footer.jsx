@@ -8,7 +8,7 @@ import { NavLink } from "react-router-dom";
 
 export const Footer = () => {
     return (
-        <footer className="footer z-40 dark:bg-def_dark_2 dark:text-white">
+        <footer className="footer">
             <ul className="flex justify-evenly text-2xl">
                 <li><NavLink to="/" activeclassname="active"><FontAwesomeIcon icon={faHome} title="Hem" /></NavLink></li>
                 <li><NavLink to="/create_item" activeclassname="active"><FontAwesomeIcon icon={faPlus} title="Lägg till" /></NavLink></li>

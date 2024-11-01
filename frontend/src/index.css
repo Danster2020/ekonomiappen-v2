@@ -17,8 +17,14 @@
         }
 
         .footer {
-            @apply fixed bottom-0 left-0 right-0 p-2 mt-8 text-gray-500 bg-gray-200;
-            padding-bottom: calc(1rem + env(safe-area-inset-bottom))
+            @apply fixed z-40 bottom-0 left-0 right-0 px-2 mt-8 text-gray-500 dark:text-white dark:backdrop-blur-xl;
+            padding-top: calc(0.5rem + (0.2 * env(safe-area-inset-bottom)));
+            padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+        }
+
+        .economy_summary {
+            @apply py-4 shadow-md dark:bg-def_dark_2 dark:text-white;
+            padding-top: calc(1rem + env(safe-area-inset-top));
         }
 
         .button_1 {

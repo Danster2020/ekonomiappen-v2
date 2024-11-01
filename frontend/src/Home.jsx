@@ -103,7 +103,7 @@ export const Home = () => {
     return (
         <>
             <Toaster position="top-right" />
-            <div className="py-4 shadow-md dark:bg-def_dark_2 dark:text-white">
+            <div className="economy_summary">
                 <div className="flex flex-col items-center">
                     <h1 className="text-6xl md:text-8xl"> {calcTotalExpenses().toLocaleString()} </h1>
                     <p>Utgifter / mån</p>
