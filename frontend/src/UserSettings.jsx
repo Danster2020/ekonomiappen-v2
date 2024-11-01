@@ -87,7 +87,7 @@ export const UserSettings = ({ toggleDarkMode, isDarkMode }) => {
                         <button className="button_1 flex-grow bg-blue-700" value="Spara" onClick={handleUpdate}>Spara</button>
                     </form>
 
-                    <span className='input_label mt-10 mb-4'>Inställningar</span>
+                    <span className='input_label mt-10'>Inställningar</span>
                     <div className='flex-col text-black dark:text-white px-4 py-4 border-2 border-neutral-400 rounded-lg'>
                         <div className='flex w-full'>
                             <span className='w-full'>Mörkt tema</span>

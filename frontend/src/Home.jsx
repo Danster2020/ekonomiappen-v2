@@ -145,7 +145,7 @@ export const Home = () => {
 
                     {items.length > 0 ? sortedItems?.map((item, i) => (
                         <Link key={i} to={`/edit_item/${item.id}`} state={item}
-                            className="flex justify-between items-center w-full max-w-md p-4 mt-8 bg-blue-900 rounded-2xl shadow-sm animate__animated animate__zoomIn hover:bg-gray-800">
+                            className="flex justify-between items-center w-full max-w-md p-4 mt-8 bg-blue-900 dark:bg-blue-700 dark:hover:bg-blue-900 rounded-2xl shadow-sm animate__animated animate__zoomIn hover:bg-gray-800">
                             <div className="text-white truncate">
                                 <h3 className="inline text-3xl">{item.title}</h3>
                                 <p className="mt-3 text-4xl">{item.price.toLocaleString()} kr</p>

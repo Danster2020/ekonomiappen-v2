@@ -18,11 +18,11 @@
 
         .footer {
             @apply fixed bottom-0 left-0 right-0 p-2 mt-8 text-gray-500 bg-gray-200;
-            padding-bottom: calc(3rem + env(safe-area-inset-bottom))
+            padding-bottom: calc(1rem + env(safe-area-inset-bottom))
         }
 
         .button_1 {
-            @apply inline-block p-4 text-lg text-center text-white cursor-pointer rounded-xl hover:bg-gray-800;
+            @apply inline-block p-4 text-lg text-center text-white cursor-pointer rounded-xl hover:bg-neutral-700;
         }
 
         .input_heading_a {
@@ -30,7 +30,7 @@
         }
 
         .input_label {
-            @apply block font-semibold text-gray-600 dark:text-white;
+            @apply block mb-2 font-semibold text-gray-600 dark:text-white;
         }
 
         .input_w_small {

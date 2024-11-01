@@ -84,7 +84,7 @@ export default function ItemForm({ title }) {
                         {!state && <Link className="button_1 bg-gray-500" to="/">
                             Avbryt
                         </Link>}
-                        {state && <button className='button_1 bg-red-600' onClick={() => handleDelete()}><FontAwesomeIcon icon={faTrash} title="Radera" className='pr-2' />Radera</button>}
+                        {state && <button className="button_1 bg-red-700 dark:bg-red-900 hover:dark:bg-red-950" onClick={() => handleDelete()}><FontAwesomeIcon icon={faTrash} title="Radera" className='pr-2' />Radera</button>}
                         {!state && <button className="button_1 flex-grow bg-blue-700" onClick={handleCreate}>Lägg till</button>}
                         {state && <button className="button_1 flex-grow bg-blue-700" onClick={handleUpdate}>Spara</button>}
 
