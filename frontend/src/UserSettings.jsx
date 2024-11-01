@@ -10,8 +10,7 @@ import { faUserSlash, faArrowRightFromBracket } from '@fortawesome/free-solid-sv
 
 import toast, { Toaster } from 'react-hot-toast';
 
-export const UserSettings = () => {
-
+export const UserSettings = ({ toggleDarkMode, isDarkMode }) => {
     const navigate = useNavigate()
     const location = useLocation()
     const state = useLocation().state
@@ -29,6 +28,7 @@ export const UserSettings = () => {
             try {
                 const res = await axios.get("/users/")
                 setUser(res.data)
+                console.log("data", user);
             } catch (error) {
                 console.log(error);
                 toast.error("Något gick fel")
@@ -74,7 +74,7 @@ export const UserSettings = () => {
             <Toaster position="top-right" />
             <div className="flex justify-center mt-8">
                 <div className="custom_form px-4 py-8 max-w-md w-full rounded-lg shadow-xl dark:bg-def_dark_2">
-                    <h1 className="text-3xl mb-4">Inställningar</h1>
+                    <h1 className="text-3xl mb-4">Profil</h1>
                     <div className='flex flex-col items-center'>
                         <img className='w-32 h-32 border-4 border-blue-300 rounded-full' src={currentUser.picture} alt="user profile" />
                         <p className="text-lg font-semibold mt-4">{currentUser.name}</p>
@@ -86,6 +86,19 @@ export const UserSettings = () => {
                         </div>
                         <button className="button_1 flex-grow bg-blue-700" value="Spara" onClick={handleUpdate}>Spara</button>
                     </form>
+
+                    <span className='input_label mt-10 mb-4'>Inställningar</span>
+                    <div className='flex-col text-black dark:text-white px-4 py-4 border-2 border-neutral-400 rounded-lg'>
+                        <div className='flex w-full'>
+                            <span className='w-full'>Mörkt tema</span>
+                            <label className="flex cursor-pointer">
+                                {/* <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Dark mode</span> */}
+                                <input checked={isDarkMode} onChange={toggleDarkMode} type="checkbox" className="sr-only peer" />
+                                <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                            </label>
+                        </div>
+                    </div>
+
                     <button className="button_1 w-full mt-20 bg-gray-500" onClick={handleLogOut}><FontAwesomeIcon icon={faArrowRightFromBracket} className='mr-2' />Logga ut</button>
                     <button className="mt-20 text-red-700" onClick={() => setModal(true)}><FontAwesomeIcon icon={faUserSlash} className='mr-2' />Radera konto</button>
                     <Modal
