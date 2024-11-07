@@ -125,7 +125,7 @@ export const Home = () => {
                     </div>
                 </div>
             ) : (
-                <motion.div className="flex flex-col items-center px-4 pb-20 " initial={{ scale: 0, opacity: 0 }}
+                <motion.div className="flex flex-col items-center px-4 pb-24" initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{
                         type: "spring",
@@ -160,8 +160,6 @@ export const Home = () => {
                             <p className='text-gray-600'>Tryck på pluset nedan för att lägga till en utgift.</p>
                             <FontAwesomeIcon icon={faArrowDown} className='text-7xl mt-10 text-def_blue_2' />
                         </div>}
-
-
                 </motion.div>
             )}
 

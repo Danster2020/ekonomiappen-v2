@@ -72,7 +72,7 @@ export const UserSettings = ({ toggleDarkMode, isDarkMode }) => {
     return (
         <>
             <Toaster position="top-right" />
-            <div className="flex justify-center mt-8">
+            <div className="flex justify-center mb-10">
                 <div className="custom_form px-4 py-8 max-w-md w-full rounded-lg shadow-xl dark:bg-def_dark_2">
                     <h1 className="text-3xl mb-4">Profil</h1>
                     <div className='flex flex-col items-center'>
@@ -99,8 +99,11 @@ export const UserSettings = ({ toggleDarkMode, isDarkMode }) => {
                         </div>
                     </div>
 
-                    <button className="button_1 w-full mt-20 bg-gray-500" onClick={handleLogOut}><FontAwesomeIcon icon={faArrowRightFromBracket} className='mr-2' />Logga ut</button>
-                    <button className="mt-20 text-red-700" onClick={() => setModal(true)}><FontAwesomeIcon icon={faUserSlash} className='mr-2' />Radera konto</button>
+                    <div className='input_label mt-10'>Konto</div>
+                    <div>
+                        <button className="button_1 w-full bg-gray-500" onClick={handleLogOut}><FontAwesomeIcon icon={faArrowRightFromBracket} className='mr-2' />Logga ut</button>
+                        <button className="mt-10 text-red-700" onClick={() => setModal(true)}><FontAwesomeIcon icon={faUserSlash} className='mr-2' />Radera konto</button>
+                    </div>
                     <Modal
                         openModal={modal}
                         closeModal={() => setModal(false)}
