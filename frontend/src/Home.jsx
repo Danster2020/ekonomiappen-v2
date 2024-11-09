@@ -10,6 +10,11 @@ import { motion } from "framer-motion"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFilter, faArrowDown } from '@fortawesome/free-solid-svg-icons'
 
+// used for dynamic icons
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+library.add(fas)
+
 import toast, { Toaster } from 'react-hot-toast';
 
 export const Home = () => {
@@ -151,7 +156,9 @@ export const Home = () => {
                                 <p className="mt-3 text-4xl">{item.price.toLocaleString()} kr</p>
                             </div>
                             <div>
-                                <div className="h-20 w-20 bg-white dark:bg-def_dark_2 rounded-2xl"></div>
+                                <div className="h-20 w-20 flex items-center justify-center bg-white dark:bg-def_dark_2 rounded-2xl">
+                                    <FontAwesomeIcon icon={item.icon} className='text-4xl text-def_blue_2 dark:text-white' />
+                                </div>
                             </div>
                         </Link>
                     )) :
