@@ -10,7 +10,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 library.add(fas)
 
-export default function ItemForm({ title }) {
+export default function ItemForm({ title, autofocusTitle }) {
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -105,7 +105,7 @@ export default function ItemForm({ title }) {
                 <form className="grid grid-cols-1 gap-6 " id="item_form" onSubmit={handleFormSubmit}>
                     <div>
                         <label className='input_label' htmlFor="title">Titel</label>
-                        <input name='title' id='title' type="text" value={state && item.title} className="input_w_full form-input" placeholder="T.ex. Hyra" onChange={handleChange} autoFocus />
+                        <input name='title' id='title' type="text" value={state && item.title} className="input_w_full form-input" placeholder="T.ex. Hyra" onChange={handleChange} autoFocus={autofocusTitle} />
                     </div>
                     <div>
                         <label className='input_label' htmlFor="price">Kostnad</label>

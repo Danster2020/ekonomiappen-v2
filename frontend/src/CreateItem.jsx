@@ -5,7 +5,7 @@ export const CreateItem = () => {
 
     return (
         <>
-            <ItemForm title={"Lägg till"}></ItemForm>
+            <ItemForm title={"Lägg till"} autofocusTitle={true}></ItemForm>
             <Footer></Footer>
         </>
     )
