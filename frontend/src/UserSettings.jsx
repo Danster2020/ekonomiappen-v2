@@ -72,7 +72,7 @@ export const UserSettings = ({ toggleDarkMode, isDarkMode }) => {
     return (
         <>
             <Toaster position="top-right" />
-            <div className="flex justify-center mb-10">
+            <div className="flex justify-center mt-16 mb-16">
                 <div className="custom_form px-4 py-8 max-w-md w-full rounded-lg shadow-xl dark:bg-def_dark_2">
                     <h1 className="text-3xl mb-4">Profil</h1>
                     <div className='flex flex-col items-center'>

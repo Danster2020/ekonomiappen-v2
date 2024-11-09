@@ -99,7 +99,7 @@ export default function ItemForm({ title }) {
 
 
     return (
-        <div className="flex justify-center mt-8">
+        <div className="flex justify-center mt-16 mb-16">
             <div className="custom_form px-4 py-8 max-w-md w-full rounded-lg shadow-xl dark:bg-def_dark_2">
                 <h1 className="text-3xl mb-10">{title}</h1>
                 <form className="grid grid-cols-1 gap-6 " id="item_form" onSubmit={handleFormSubmit}>
