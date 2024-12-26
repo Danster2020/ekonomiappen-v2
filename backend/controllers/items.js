@@ -38,7 +38,7 @@ export const addItem = (req, res) => {
         user_id,
         req.body.price,
         req.body.description,
-        icon,
+        req.body.icon,
     ]
 
     db.query(sql, [values], (err, data) => {
